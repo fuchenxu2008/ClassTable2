@@ -1,4 +1,3 @@
-const eventManager = require('./scraper');
 const ics = require('./ics.js');
 const moment = require('moment');
 const fs = require('fs');
@@ -7,7 +6,7 @@ var cal = ics();
 const termInfo = JSON.parse(fs.readFileSync(__dirname + '/term.config.json'));
 var classTable;
 
-eventManager.on('makeiCalendar', class_table => {
+module.exports = function makeiCalendar({class_table, uname}) {
     classTable = class_table;
     Object.keys(classTable).forEach(weekday => {
         classTable[weekday].classes.forEach(Class => {
@@ -23,11 +22,15 @@ eventManager.on('makeiCalendar', class_table => {
         var holiweekEnd = moment(holiweekStart).add('5', 'day').toDate();
         cal.addEvent(`${holiweek[Object.keys(holiweek)[0]]} 🚩`, `🚩🚩🚩`, '', holiweekStart, holiweekEnd);
     });
-    fs.writeFile('cal.ics', cal.build(), (err) => {
+    console.log('saving...');
+    
+    const calendar = cal.build();
+    fs.writeFileSync(`${__root}/calendars/${uname}.ics`, calendar, (err) => {
         if (err) throw err;
         console.log('Calendar Saved');
     })
-})
+    return calendar;
+}
 
 function addClassToCal(Class) {
     const weekdic = getInterval(Class.period)

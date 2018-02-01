@@ -9,19 +9,19 @@ class Register extends Component {
     render() {
         return (
             <form>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Email address</label>
-                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" />
+                    <input type="email" className="form-control" aria-describedby="emailHelp" placeholder="Enter email" />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password" />
+                    <input type="password" className="form-control" placeholder="Password" />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Re-Enter Password</label>
-                    <input type="password" class="form-control" placeholder="Re-Enter Password" />
+                    <input type="password" className="form-control" placeholder="Re-Enter Password" />
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" className="btn btn-primary">Register</button>
             </form>
         );
     }

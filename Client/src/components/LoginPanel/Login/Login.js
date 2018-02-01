@@ -8,16 +8,16 @@ class Register extends Component {
 
     render() {
         return (
-            <form>
-                <div class="form-group">
+            <form onSubmit={this.props.onLogin}>
+                <div className="form-group">
                     <label>Email address</label>
-                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" />
+                    <input type="text" onChange={(e) => this.props.onUnameChange(e.target.value)} className="form-control" aria-describedby="emailHelp" placeholder="Enter email" />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password" />
+                    <input type="password" onChange={(e) => this.props.onPswChange(e.target.value)} className="form-control" placeholder="Password" />
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary">Login</button>
             </form>
         );
     }
