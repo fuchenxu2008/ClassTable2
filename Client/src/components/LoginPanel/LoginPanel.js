@@ -51,7 +51,7 @@ class LoginPanel extends Component {
 
     getCal(e) {
         e.preventDefault();
-        axios.post('http://192.168.1.105:3001/ebridge/class', {
+        axios.post('http://172.20.10.2:3001/ebridge/class', {
             uname: this.state.uname,
             psw: this.state.psw
         })

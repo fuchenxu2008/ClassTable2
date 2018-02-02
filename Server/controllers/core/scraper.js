@@ -4,8 +4,6 @@ const cheerio = require('cheerio');
 const EventEmitter = require('events');
 const fs = require('fs');
 
-// Enable CookieJar
-var jar = rp.jar();
 // Event Manager
 const eventManager = new EventEmitter();
 
@@ -13,6 +11,8 @@ module.exports = {
 
     async login({uname, psw}, res) {
         console.log('Program initiating...');
+        // Enable CookieJar
+        var jar = rp.jar();
         // Get form data and cookie
         var body = await rp({uri: 'https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/siw_lgn', jar})
         var $ = cheerio.load(body);

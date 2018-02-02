@@ -1,27 +1,17 @@
 const cheerio = require('cheerio');
 
-// ClassTable
-var classTable = {
-    Monday: {
-        colspan: 1,
-        classes: []
-    },
-    Tuesday: {
-        colspan: 1,
-        classes: []
-    },
-    Wednesday: {
-        colspan: 1,
-        classes: []
-    },
-    Thursday: {
-        colspan: 1,
-        classes: []
-    },
-    Friday: {
-        colspan: 1,
-        classes: []
-    }
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+function initializeTable() {
+    // ClassTable
+    var classTable = {}
+    weekDays.forEach(weekday => {
+        classTable[weekday] = {
+            colspan: 1,
+            classes: []
+        }
+    });
+    return classTable;
 }
 
 // Get Time Nodes
@@ -43,17 +33,19 @@ function calcuEndTime(start) {
     return `${h}:${m}`
 }
 
-function getColsForDay(day, timeNodeElement, $) {
+function getColsForDay(day, timeNodeElement, $, classTable) {
     // Calculate the interval columns for the weekday
-    var start = Object.keys(classTable).slice(0, Object.keys(classTable).indexOf(day)).reduce((total, day) => total + classTable[day].colspan, 0)
+    var start = weekDays.slice(0, weekDays.indexOf(day)).reduce((total, day) => total + classTable[day].colspan, 0)
     var end = start + classTable[day].colspan;
     return $(timeNodeElement).siblings().toArray().slice(start, end);
 }
 
 module.exports = function parseTable(table) {
+    // ClassTable
+    var classTable = initializeTable();
     var $ = cheerio.load(table);
     // Iterating weekdays
-    Object.keys(classTable).forEach((day, index) => {
+    weekDays.forEach((day, index) => {
         // Index is weekday-1
         // console.log(`Traversing index ${index} of classTable`);
         // How many columns in one weekday
@@ -76,7 +68,7 @@ module.exports = function parseTable(table) {
                 return $(this).text() === timeNode
             }).get(0)
             // Grids at single time node in one weekday
-            var colsForDay = getColsForDay(day, timeNodeElement, $);
+            var colsForDay = getColsForDay(day, timeNodeElement, $, classTable);
             // Iterating each grid at the time node of the day
             colsForDay.forEach((grid, i) => {
                 // If this grid contains a class
@@ -88,9 +80,9 @@ module.exports = function parseTable(table) {
                         startTime: timeNode,
                         endTime: calcuEndTime(timeNode),
                         moduleCode: $(classInfo.get(0)).text().substring(0, 6),
-                        classTitle: $(classInfo.get(0)).text().replace(',', '\,'),
-                        lecturer: $(classInfo.get(1)).text().replace(',', '\,'),
-                        location: $(classInfo.get(2)).text().replace(',', '\,'),
+                        classTitle: $(classInfo.get(0)).text(),
+                        lecturer: $(classInfo.get(1)).text(),
+                        location: $(classInfo.get(2)).text(),
                         period: $(classInfo.get(3)).text()
                     }
                     // Core Logic
@@ -141,7 +133,45 @@ module.exports = function parseTable(table) {
             });
             row += 1;
         });
+        classesOfDay.forEach(Class => {
+            const logo = getLogo(Class.moduleCode, Class.classTitle);
+            Class.classTitle = `${logo} ${Class.classTitle}`;
+        });
         classTable[day].classes = classesOfDay;
     });
+
     return classTable;
+}
+
+function getLogo(code, title) {
+    var logo = '📚';
+    if (title.toLowerCase().includes('tutorial')) logo = '👨🏻‍🏫'
+    else if (title.toLowerCase().includes('seminar')) logo = '👨🏻‍💻'
+    else if (title.toLowerCase().includes('lab')) logo = '🔬'
+    else {
+        if (code.includes('ARC')) logo = '🏛'
+        else if (code.includes('BIO')) logo = '🐶'
+        else if (code.includes('CHE')) logo = '⚗️'
+        else if (code.includes('CCS')) logo = '🇨🇳'
+        else if (code.includes('CCT')) logo = '🗺'
+        else if (code.includes('CEN')) logo = '🏠'
+        else if (code.includes('CSE')) logo = '🖥'
+        else if (code.includes('EEE')) logo = '🚀'
+        else if (code.includes('ENG')) logo = '📜'
+        else if (code.includes('ENV')) logo = '🏖'
+        else if (code.includes('IND')) logo = '🎨'
+        else if (code.includes('ACF')) logo = '📈'
+        else if (code.includes('ECO')) logo = '💵'
+        else if (code.includes('MAN')) logo = '📇'
+        else if (code.includes('CLT')) logo = '📖'
+        else if (code.includes('EAP')) logo = '🎙'
+        else if (code.includes('LAN')) logo = '📰'
+        else if (code.includes('SPA')) logo = '🇪🇸'
+        else if (code.includes('MTH')) logo = '📐'
+        else if (code.includes('PHE')) logo = '🎾'
+        else if (code.includes('DPH')) logo = '💉'
+        else if (code.includes('COM')) logo = '🎬'
+        else if (code.includes('CDE')) logo = '🛣'
+    }
+    return logo;
 }

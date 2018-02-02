@@ -2,37 +2,37 @@ const ics = require('./ics.js');
 const moment = require('moment');
 const fs = require('fs');
 
-var cal = ics();
 const termInfo = JSON.parse(fs.readFileSync(__dirname + '/term.config.json'));
-var classTable;
+
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 module.exports = function makeiCalendar({class_table, uname}) {
-    classTable = class_table;
-    Object.keys(classTable).forEach(weekday => {
+    var cal = ics();
+    var classTable = class_table;
+    weekDays.forEach(weekday => {
         classTable[weekday].classes.forEach(Class => {
-            addClassToCal(Class);
+            addClassToCal(Class, cal);
         });
     })
     termInfo.holidays.days.forEach(holiday => {
         var holidayStart = moment(Object.keys(holiday)[0]).toDate();
-        cal.addEvent(`${holiday[Object.keys(holiday)[0]]} 🎉`, `🎉🎉🎉`, '', holidayStart, holidayStart);        
+        cal.addEvent(`🎉 ${holiday[Object.keys(holiday)[0]]}`, `🎉🎉🎉`, '', holidayStart, holidayStart);        
     });
     termInfo.holidays.weeks.forEach(holiweek => {
         var holiweekStart = moment(termInfo.termStart).add(parseInt(Object.keys(holiweek)[0] - 1), 'week').toDate();
         var holiweekEnd = moment(holiweekStart).add('5', 'day').toDate();
-        cal.addEvent(`${holiweek[Object.keys(holiweek)[0]]} 🚩`, `🚩🚩🚩`, '', holiweekStart, holiweekEnd);
+        cal.addEvent(`🚩 ${holiweek[Object.keys(holiweek)[0]]}`, `🚩🚩🚩`, '', holiweekStart, holiweekEnd);
     });
     console.log('saving...');
     
     const calendar = cal.build();
-    fs.writeFileSync(`${__root}/calendars/${uname}.ics`, calendar, (err) => {
-        if (err) throw err;
-        console.log('Calendar Saved');
-    })
+    
+    fs.writeFileSync(`${__root}/calendars/${uname}.ics`, calendar);
+    console.log('Calendar Saved');
     return calendar;
 }
 
-function addClassToCal(Class) {
+function addClassToCal(Class, cal) {
     const weekdic = getInterval(Class.period)
     Object.keys(weekdic).forEach(startWeek => {
         // get actual date time of class time
@@ -47,15 +47,16 @@ function addClassToCal(Class) {
                 count: repeatTime,
             }
         }
-        cal.addEvent(`${Class.classTitle} by ${Class.lecturer}`, Class.period, Class.location, startDateTime, endDateTime, rrule);     
+        var classTitle = Class.classTitle.replace(',', '\\,');
+        
+        cal.addEvent(`${classTitle} by ${Class.lecturer.replace(',', '\\,')}`, Class.period, Class.location.replace(',', '\\,'), startDateTime, endDateTime, rrule);
     })
 }
 
 // Get actual date from period
 function getDateTime(weekDay, startWeek, timeNodes) {
-    var weekdays = Object.keys(classTable);
-    for (let index = 0; index < weekdays.length; index++) {
-        if (weekDay === weekdays[index]) {
+    for (let index = 0; index < weekDays.length; index++) {
+        if (weekDay === weekDays[index]) {
             var days = index + (startWeek - 1) * 7;
             const dateTime = {
                 start: moment(`${termInfo.termStart} ${timeNodes.start}`, "YYYY-MM-DD hh:mm").add(days, 'day'),

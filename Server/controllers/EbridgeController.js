@@ -18,7 +18,7 @@ module.exports = {
         const iCalendar = ebridgeSession.makeCalendar();
 
         // res.send(iCalendar);
-        res.send(`http://192.168.1.105:3001/ebridge/download/${uname}`);
+        res.send(`http://172.20.10.2:3001/ebridge/download/${uname}`);
     },
 
     downloadCalendar(req, res) {
