@@ -4,6 +4,6 @@ var ebridgeController = require('../controllers/EbridgeController');
 
 router.post('/class', ebridgeController.getClass);
 
-router.get('/download/:fileToken', ebridgeController.downloadCalendar);
+router.get('/download/:token', ebridgeController.downloadCalendar);
 
 module.exports = router;

@@ -51,12 +51,19 @@ class LoginPanel extends Component {
 
     getCal(e) {
         e.preventDefault();
-        axios.post('http://172.20.10.2:3001/ebridge/class', {
+        axios.post('http://192.168.1.105:3001/ebridge/class', {
             uname: this.state.uname,
             psw: this.state.psw
         })
-        .then(url => {
-            window.location.href = url.data
+        .then(res => {
+            if (res.data.token) {
+                window.location.href = `http://192.168.1.105:3001/ebridge/download/${res.data.token}`;
+            } else{
+                console.log('Invalid Credentials');
+            }   
+        })
+        .catch(err => {
+            console.log(err);
         })
     }
 

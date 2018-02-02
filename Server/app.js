@@ -6,8 +6,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
 var ebridge = require('./routes/ebridge');
 
 var app = express();
@@ -37,8 +35,6 @@ mongoose.connect(config.mongoURL, (err) => {
   if (err) throw err;
 });
 
-app.use('/', index);
-app.use('/users', users);
 app.use('/ebridge', ebridge);
 
 module.exports = app;
