@@ -5,18 +5,19 @@ var moment = require('moment');
 const config = require('../config');
 var Download = require('../models/Download');
 
-Download.findOne({username: 'fanrui.min15'}, (err, download) => {
-    console.log(moment(download.time).format('YYYY-MM-DD hh:mm:ss'));
-})
-
 module.exports = {
 
     async getClass(req, res) {
+        const io = req.app.get('socketio');
         const uname = req.body.uname;
         const psw = req.body.psw;
-        const ebridgeSession = new ebridgeHub({ uname, psw });
+        const ebridgeSession = new ebridgeHub({
+            uname,
+            psw,
+            io
+        });
         try {
-            await ebridgeSession.login(res);
+            await ebridgeSession.login();
         } catch (err) {
             return res.send(err);
         }
@@ -25,17 +26,28 @@ module.exports = {
 
         const token = jwt.sign(uname, config.secret);
         // Save token to download in db
-        Download.create({ token }, (err) => {
+        Download.create({
+            token
+        }, (err) => {
             if (err) return res.send(err);
-            res.send({ token });
+            res.send({
+                token
+            });
         })
     },
 
     downloadCalendar(req, res) {
         // Authenticate token
-        Download.findOne({ token: req.params.token }, (err, download) => {
+        console.log(req.params.token);
+
+        Download.findOne({
+            token: req.params.token
+        }, (err, download) => {
+            console.log(6);
             if (err || !download) {
-                return res.status(400).json({ message: 'Invalid token!!!' });
+                return res.status(400).json({
+                    message: 'Invalid token!!!'
+                });
             }
 
             // Decode token, extract filename
@@ -56,7 +68,9 @@ module.exports = {
                 // and delete file
                 stream.on('close', () => {
                     fs.unlink(filePath, (err) => {
-                        if (err) { console.log('Failed to delete file.'); }
+                        if (err) {
+                            console.log('Failed to delete file.');
+                        }
                     });
                 })
             } else {
@@ -68,7 +82,9 @@ module.exports = {
             download.token = 'Completed';
             download.time = moment().format('YYYY-MM-DD hh:mm:ss');
             download.save((err) => {
-                if (err) { return res.status(400).send('Something went wrong...') }
+                if (err) {
+                    return res.status(400).send('Something went wrong...')
+                }
             });
         })
     }
