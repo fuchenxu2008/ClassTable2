@@ -3,13 +3,15 @@ var rp = require('request-promise');
 const cheerio = require('cheerio');
 const EventEmitter = require('events');
 const fs = require('fs');
+// const io = require('../../app').io;
 
 // Event Manager
 const eventManager = new EventEmitter();
 
 module.exports = {
 
-    async login({uname, psw}, res) {
+    async login({uname, psw, io}) {
+        
         console.log('Program initiating...');
         // Enable CookieJar
         var jar = rp.jar();
@@ -25,7 +27,8 @@ module.exports = {
         formData['PASSWORD.DUMMY.MENSYS.1'] = psw;
         formData['BP101.DUMMY_B.MENSYS.1'] = 'Log in';
         console.log('Logging in...');
-          
+        io.emit('status', 'Logging in...');
+        
         // Post form to log in to intermediate page
         var options = {
             method: 'POST',
@@ -38,28 +41,34 @@ module.exports = {
         var redirectURL = $('#siw_portal_url').val();
         if (redirectURL === undefined) {
             console.log('Failed to login!');
+            io.emit('status', 'Failed to login!');
             throw 'Failed to login!';
         }
         console.log('Redirecting to Portal...');
+        io.emit('status', 'Redirecting to Portal...');
 
         // Redirect to portal home page
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${redirectURL}`, jar})
         console.log('Successfully logged in!');
+        io.emit('status', 'Successfully logged in!');
 
         var portal = body;
         // console.log(portal);
         return { portal, jar };
     },
 
-    async getTimetable({portal, jar}) {
+    async getTimetable({ portal, jar, io }) {
         var $ = cheerio.load(portal);
         const timeTablePageURL = $('#TIMETABLE').attr('href');
         var body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTablePageURL}`, jar})
         console.log('Entering classTable page...');
+        io.emit('status', 'Entering classTable page...');
+
         $ = cheerio.load(body);
         const timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href').substring(7);
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
+        console.log('Got table!');
         console.log('Got table!');
 
         const table = body;

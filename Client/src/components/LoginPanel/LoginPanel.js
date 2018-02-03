@@ -8,6 +8,7 @@ import {
     Link
 } from 'react-router-dom';
 import axios from 'axios';
+import io from 'socket.io-client';
 // var calData = require('./calData');
 // var ICAL = require('ical.js');
 
@@ -56,6 +57,7 @@ class LoginPanel extends Component {
             psw: this.state.psw
         })
         .then(res => {
+            console.log(res);
             if (res.data.token) {
                 window.location.href = `http://192.168.1.105:3001/ebridge/download/${res.data.token}`;
             } else{
@@ -67,15 +69,15 @@ class LoginPanel extends Component {
         })
     }
 
-    // componentDidMount() {
-    //     var icalObject = ICAL.parse(calData);
-    //     var comp = new ICAL.Component(icalObject);
-    //     var vevent = comp.getFirstSubcomponent("vevent");
-    //     var summary = vevent.getFirstPropertyValue("summary");
-    //     console.log(comp);
-    //     console.log(vevent);
-    //     console.log(summary);
-    // }
+    componentDidMount() {
+        axios.get('http://192.168.1.105:3001/ebridge/socket');
+        var socket = io('http://192.168.1.105:3001');
+        console.log('socket requested');
+        
+        socket.on('status', (data) => {
+            console.log('Socket:', data);
+        })
+    }
 }
 
 export default LoginPanel;

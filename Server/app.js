@@ -9,9 +9,8 @@ var config = require('./config');
 var ebridge = require('./routes/ebridge');
 
 var app = express();
+var server = require('http').Server(app);
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,6 +34,9 @@ mongoose.connect(config.mongoURL, (err) => {
   if (err) throw err;
 });
 
+var io = require('socket.io')(server);
+app.set('socketio', io);
+
 app.use('/ebridge', ebridge);
 
-module.exports = app;
+module.exports = { app, server };
