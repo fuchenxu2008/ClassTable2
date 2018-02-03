@@ -38,12 +38,9 @@ module.exports = {
 
     downloadCalendar(req, res) {
         // Authenticate token
-        console.log(req.params.token);
-
         Download.findOne({
             token: req.params.token
         }, (err, download) => {
-            console.log(6);
             if (err || !download) {
                 return res.status(400).json({
                     message: 'Invalid token!!!'
@@ -79,7 +76,7 @@ module.exports = {
 
             // Log download, destroy old token in DB
             download.username = username;
-            download.token = 'Completed';
+            download.token = undefined;
             download.time = moment().format('YYYY-MM-DD hh:mm:ss');
             download.save((err) => {
                 if (err) {

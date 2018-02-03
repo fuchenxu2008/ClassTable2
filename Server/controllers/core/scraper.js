@@ -68,7 +68,7 @@ module.exports = {
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');
-        io.emit('Got table!');
+        io.emit('status', 'Got table!');
 
         const table = body;
         return table;

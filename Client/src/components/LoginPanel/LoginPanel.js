@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './LoginPanel.css';
-import Register from './Register/Register';
+// import Register from './Register/Register';
 import Login from './Login/Login';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
+// import {
+//     BrowserRouter as Router,
+//     Route,
+//     Link
+// } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
 // var calData = require('./calData');
@@ -26,19 +26,15 @@ class LoginPanel extends Component {
 
     render() {
         return (
-            <Router>
-                <div className="card loginPanel">
-                    <h5 className="card-header">
-                        <Link to="/">Login</Link>&nbsp;/&nbsp;
-                        <Link to="/register">Register</Link>
-                    </h5>
-                    <div className="card-body">
+            <div className="card loginPanel">
+                <h5 className="card-header">
+                    Login
+                </h5>
+                <div className="card-body">
                     <Login onLogin={this.getCal} onUnameChange={this.handleUnameChange} onPswChange={this.handlePswChange}/>
-                        <Route exact path="/" component={Login}/>
-                        <Route path="/register" component={Register} />
-                    </div>
                 </div>
-            </Router>
+            </div>
+        
         );
     }
 
@@ -70,7 +66,6 @@ class LoginPanel extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.1.105:3001/ebridge/socket');
         var socket = io('http://192.168.1.105:3001');
         console.log('socket requested');
         

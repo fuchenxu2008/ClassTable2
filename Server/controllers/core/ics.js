@@ -11,7 +11,7 @@ var ics = function(uidDomain, prodId) {
   var calendarEvents = [];
   var calendarStart = [
     'BEGIN:VCALENDAR',
-    'PRODID:' + prodId,
+    'PRODID:' + prodId + '-//Chenxu.Fu15//Class TimeTable Crawler//EN',
     'VERSION:2.0'
   ].join(SEPARATOR);
   var calendarEnd = SEPARATOR + 'END:VCALENDAR';
@@ -171,7 +171,7 @@ var ics = function(uidDomain, prodId) {
 
       var calendarEvent = [
         'BEGIN:VEVENT',
-        'UID:' + calendarEvents.length + "@" + uidDomain,
+        // 'UID:' + calendarEvents.length + "@" + uidDomain,
         'CLASS:PUBLIC',
         'DESCRIPTION:' + description,
         'DTSTAMP;VALUE=DATE-TIME:' + now,
