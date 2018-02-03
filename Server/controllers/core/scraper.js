@@ -3,7 +3,6 @@ var rp = require('request-promise');
 const cheerio = require('cheerio');
 const EventEmitter = require('events');
 const fs = require('fs');
-// const io = require('../../app').io;
 
 // Event Manager
 const eventManager = new EventEmitter();
@@ -69,7 +68,7 @@ module.exports = {
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');
-        console.log('Got table!');
+        io.emit('Got table!');
 
         const table = body;
         return table;
