@@ -11,11 +11,8 @@ module.exports = {
         const io = req.app.get('socketio');
         const uname = req.body.uname;
         const psw = req.body.psw;
-        const ebridgeSession = new ebridgeHub({
-            uname,
-            psw,
-            io
-        });
+        const socketId = req.body.socketId;
+        const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
         try {
             await ebridgeSession.login();
         } catch (err) {
@@ -26,9 +23,7 @@ module.exports = {
 
         const token = jwt.sign(uname, config.secret);
         // Save token to download in db
-        Download.create({
-            token
-        }, (err) => {
+        Download.create({ token }, (err) => {
             if (err) return res.send(err);
             res.send({
                 token
@@ -68,6 +63,7 @@ module.exports = {
                         if (err) {
                             console.log('Failed to delete file.');
                         }
+                        console.log('Operation completed.');
                     });
                 })
             } else {

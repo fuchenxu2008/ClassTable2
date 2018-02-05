@@ -150,7 +150,7 @@ function getLogo(code, title) {
     else if (title.toLowerCase().includes('lab')) logo = '🔬'
     else {
         if (code.includes('ARC')) logo = '🏛'
-        else if (code.includes('BIO')) logo = '🐶'
+        else if (code.includes('BIO')) logo = '🐳'
         else if (code.includes('CHE')) logo = '⚗️'
         else if (code.includes('CCS')) logo = '🇨🇳'
         else if (code.includes('CCT')) logo = '🗺'

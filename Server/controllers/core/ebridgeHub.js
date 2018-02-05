@@ -3,29 +3,32 @@ var parseTable = require('./parseTable');
 var makeiCalendar = require('./makeiCalendar');
 
 class ebridgeHub {
-    constructor({uname, psw, io}) {
-        this.uname = uname;
-        this.psw = psw;
-        this.io = io;
+    constructor({uname, psw, socketId, io}) {
+        this.user = { uname, psw };
+        this.socket = { id: socketId, io };
     }
 
     async login() {
-        const { portal, jar } = await scraper.login({ uname: this.uname, psw: this.psw, io: this.io });
+        const { portal, jar } = await scraper.login({ 
+            user: this.user, socket: this.socket
+        });
         this.portal = portal;
         this.jar = jar;
     }
 
     async getClass() {
-        // console.log(this.portal);
-        const table = await scraper.getTimetable({ portal: this.portal, jar: this.jar, io: this.io });
+        const table = await scraper.getTimetable({ 
+            portal: this.portal, jar: this.jar, socket: this.socket
+        });
         const classTable = parseTable(table);
         this.classTable = classTable;
-        
         return classTable;
     }
 
     makeCalendar() {
-        return makeiCalendar({ class_table: this.classTable, uname: this.uname, io: this.io });
+        return makeiCalendar({ 
+            class_table: this.classTable, user: this.user, socket: this.socket
+        });
     }
 }
 

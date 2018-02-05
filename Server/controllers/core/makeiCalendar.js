@@ -6,8 +6,8 @@ const termInfo = JSON.parse(fs.readFileSync(__dirname + '/term.config.json'));
 
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-module.exports = function makeiCalendar({class_table, uname, io}) {
-    io.emit('status', 'Preparing calendar...');
+module.exports = function makeiCalendar({class_table, user, socket}) {
+    socket.io.emit(socket.id, 'Preparing calendar...');
     var cal = ics();
     var classTable = class_table;
     weekDays.forEach(weekday => {
@@ -25,13 +25,13 @@ module.exports = function makeiCalendar({class_table, uname, io}) {
         cal.addEvent(`🚩 ${holiweek[Object.keys(holiweek)[0]]}`, `🚩🚩🚩`, '', holiweekStart, holiweekEnd);
     });
     console.log('saving...');
-    io.emit('status', 'Almost there...');
+    socket.io.emit(socket.id, 'Almost there...');
     
     const calendar = cal.build();
     
-    fs.writeFileSync(`${__root}/calendars/${uname}.ics`, calendar);
+    fs.writeFileSync(`${__root}/calendars/${user.uname}.ics`, calendar);
     console.log('Calendar Saved');
-    io.emit('status', 'Ready to go!');
+    socket.io.emit(socket.id, 'Ready to go!');
     return calendar;
 }
 

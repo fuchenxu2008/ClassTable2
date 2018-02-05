@@ -9,6 +9,7 @@ import Login from './Login/Login';
 // } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
+import uuidv4 from 'uuid/v4';
 // var calData = require('./calData');
 // var ICAL = require('ical.js');
 
@@ -17,7 +18,9 @@ class LoginPanel extends Component {
         super(props);
         this.state = {
             uname: '',
-            psw: ''
+            psw: '',
+            socket: null,
+            socketId : uuidv4()
         }
         this.handleUnameChange = this.handleUnameChange.bind(this);
         this.handlePswChange = this.handlePswChange.bind(this);
@@ -48,29 +51,28 @@ class LoginPanel extends Component {
 
     getCal(e) {
         e.preventDefault();
-        axios.post('http://192.168.1.105:3001/ebridge/class', {
+        this.setState({ socket: io('http://192.168.1.102:3001') }, () => {
+            console.log('socket requested');
+            this.state.socket.on(this.state.socketId, (data) => {
+                console.log('Socket:', data);
+            })
+        });
+        
+        axios.post('http://192.168.1.102:3001/ebridge/class', {
             uname: this.state.uname,
-            psw: this.state.psw
+            psw: this.state.psw,
+            socketId: this.state.socketId
         })
         .then(res => {
             console.log(res);
             if (res.data.token) {
-                window.location.href = `http://192.168.1.105:3001/ebridge/download/${res.data.token}`;
+                window.location.href = `http://192.168.1.102:3001/ebridge/download/${res.data.token}`;
             } else{
                 console.log('Invalid Credentials');
             }   
         })
         .catch(err => {
             console.log(err);
-        })
-    }
-
-    componentDidMount() {
-        var socket = io('http://192.168.1.105:3001');
-        console.log('socket requested');
-        
-        socket.on('status', (data) => {
-            console.log('Socket:', data);
         })
     }
 }

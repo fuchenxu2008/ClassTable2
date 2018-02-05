@@ -1,16 +1,11 @@
 var request = require('request');
 var rp = require('request-promise');
 const cheerio = require('cheerio');
-const EventEmitter = require('events');
 const fs = require('fs');
-
-// Event Manager
-const eventManager = new EventEmitter();
 
 module.exports = {
 
-    async login({uname, psw, io}) {
-        
+    async login({user, socket}) {
         console.log('Program initiating...');
         // Enable CookieJar
         var jar = rp.jar();
@@ -22,11 +17,11 @@ module.exports = {
         rawform.forEach(input => {
             formData[input['name']] = input['value']
         });
-        formData['MUA_CODE.DUMMY.MENSYS.1'] = uname;
-        formData['PASSWORD.DUMMY.MENSYS.1'] = psw;
+        formData['MUA_CODE.DUMMY.MENSYS.1'] = user.uname;
+        formData['PASSWORD.DUMMY.MENSYS.1'] = user.psw;
         formData['BP101.DUMMY_B.MENSYS.1'] = 'Log in';
         console.log('Logging in...');
-        io.emit('status', 'Logging in...');
+        socket.io.emit(socket.id, 'Logging in...');
         
         // Post form to log in to intermediate page
         var options = {
@@ -40,35 +35,34 @@ module.exports = {
         var redirectURL = $('#siw_portal_url').val();
         if (redirectURL === undefined) {
             console.log('Failed to login!');
-            io.emit('status', 'Failed to login!');
+            socket.io.emit(socket.id, 'Failed to login!');
             throw 'Failed to login!';
         }
         console.log('Redirecting to Portal...');
-        io.emit('status', 'Redirecting to Portal...');
+        socket.io.emit(socket.id, 'Redirecting to Portal...');
 
         // Redirect to portal home page
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${redirectURL}`, jar})
         console.log('Successfully logged in!');
-        io.emit('status', 'Successfully logged in!');
+        socket.io.emit(socket.id, 'Successfully logged in!');
 
         var portal = body;
-        // console.log(portal);
         return { portal, jar };
     },
 
-    async getTimetable({ portal, jar, io }) {
+    async getTimetable({ portal, jar, socket }) {
         var $ = cheerio.load(portal);
         const timeTablePageURL = $('#TIMETABLE').attr('href');
         var body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTablePageURL}`, jar})
         console.log('Entering classTable page...');
-        io.emit('status', 'Entering classTable page...');
+        socket.io.emit(socket.id, 'Entering classTable page...');
 
         $ = cheerio.load(body);
         const timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href').substring(7);
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');
-        io.emit('status', 'Got table!');
+        socket.io.emit(socket.id, 'Got table!');
 
         const table = body;
         return table;
