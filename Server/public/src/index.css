@@ -1,0 +1,33 @@
+body, html {
+  font-family: sans-serif;
+  height: 100%;
+  width: 100%;
+  /* overflow: scroll; */
+  background-color: rgb(255, 255, 255);
+}
+
+.container {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 1px 60px rgb(201, 201, 201);
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  left: 5%;
+  right: 5%;
+  overflow: hidden;
+}
+
+.ant-row {
+  max-height: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
+
+.banner {
+  margin-top: 20%;
+  font-family: 'Pacifico', cursive;
+  color: rgb(37, 146, 252);
+  font-size: 2.5em;
+  text-align: center;
+}
