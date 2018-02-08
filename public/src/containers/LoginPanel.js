@@ -14,6 +14,7 @@ class NormalLoginForm extends Component {
         this.state = {
             uname: '',
             psw: '',
+            remember: true,
             validateStatus: '',
             iconLoading: false,
             showModal: false,
@@ -22,6 +23,7 @@ class NormalLoginForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUnameChange = this.handleUnameChange.bind(this);
         this.handlePswChange = this.handlePswChange.bind(this);
+        this.handleRememberChange = this.handleRememberChange.bind(this);
     }
 
     componentDidMount() {
@@ -44,14 +46,19 @@ class NormalLoginForm extends Component {
         this.setState({ psw: e.target.value, validateStatus: '' })
     }
 
+    handleRememberChange(e) {
+        this.setState({ remember: e.target.checked });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.setState({ 
-                    iconLoading: true, 
-                    showModal: true, 
-                })
+                this.setState({ iconLoading: true, showModal: true })
+
+                if (!this.state.remember) {
+                    localStorage.clear();
+                }
 
                 const socket = io.connect('http://192.168.1.101:3001');
                 const socketId = uuidv4();
@@ -73,10 +80,12 @@ class NormalLoginForm extends Component {
                     console.log(res);
                     if (res.data.token) {
                         this.setState({ validateStatus: 'success' })
-                        localStorage.setItem('userCredential', JSON.stringify({
-                            uname: this.state.uname,
-                            psw: this.state.psw
-                        }))
+                        if (this.state.remember) {
+                            localStorage.setItem('userCredential', JSON.stringify({
+                                uname: this.state.uname,
+                                psw: this.state.psw
+                            })) 
+                        }
                         window.location.href = `http://192.168.1.101:3001/ebridge/download/${res.data.token}`;
                     } else {
                         console.log('Invalid Credentials');
@@ -116,7 +125,7 @@ class NormalLoginForm extends Component {
                         valuePropName: 'checked',
                         initialValue: true,
                     })(
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox onChange={this.handleRememberChange}>Remember me</Checkbox>
                     )}
                     <a 
                         className="login-form-forgot" 
