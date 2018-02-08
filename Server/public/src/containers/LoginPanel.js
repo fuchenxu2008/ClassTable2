@@ -4,8 +4,8 @@ import io from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
 import './LoginPanel.css';
 
-import { Layout, Row, Col } from 'antd';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import ProgressModal from '../components/ProgressModal';
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
@@ -14,7 +14,10 @@ class NormalLoginForm extends Component {
         this.state = {
             uname: '',
             psw: '',
-            socketId: uuidv4()
+            validateStatus: '',
+            iconLoading: false,
+            showModal: false,
+            currentStep: 0
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUnameChange = this.handleUnameChange.bind(this);
@@ -25,39 +28,51 @@ class NormalLoginForm extends Component {
         const cachedCredential = localStorage.getItem('userCredential');
         if (cachedCredential) {
             const user = JSON.parse(cachedCredential);
-            this.setState({ uname: user.uname, psw: user.psw })
+            this.setState({ uname: user.uname, psw: user.psw });
+            this.props.form.setFieldsValue({
+                userName: user.uname,
+                password: user.psw
+            });
         }
     }
 
     handleUnameChange(e) {
-        this.setState({ uname: e.target.value });
+        this.setState({ uname: e.target.value, validateStatus: '' })
     }
 
     handlePswChange(e) {
-        this.setState({ psw: e.target.value });
+        this.setState({ psw: e.target.value, validateStatus: '' })
     }
 
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const socket = io.connect('http://192.168.1.101:3001')
-                console.log('socket requested');
-                socket.on('connect_error', function (err) {
-                    console.log('Server is offline...');
-                });
-                socket.on(this.state.socketId, (data) => {
-                    console.log('Socket:', data);
+                this.setState({ 
+                    iconLoading: true, 
+                    showModal: true, 
                 })
-                
+
+                const socket = io.connect('http://192.168.1.101:3001');
+                const socketId = uuidv4();
+
+                socket.on(socketId, (data) => {
+                    if (!isNaN(parseInt(data, 10))) {
+                        const currentStep = parseInt(data, 10);
+                        this.setState({ currentStep });
+                        console.log('current:', currentStep);
+                    }
+                })
+
                 axios.post('http://192.168.1.101:3001/ebridge/class', {
                     uname: this.state.uname,
                     psw: this.state.psw,
-                    socketId: this.state.socketId
+                    socketId
                 })
                 .then(res => {
                     console.log(res);
                     if (res.data.token) {
+                        this.setState({ validateStatus: 'success' })
                         localStorage.setItem('userCredential', JSON.stringify({
                             uname: this.state.uname,
                             psw: this.state.psw
@@ -65,7 +80,9 @@ class NormalLoginForm extends Component {
                         window.location.href = `http://192.168.1.101:3001/ebridge/download/${res.data.token}`;
                     } else {
                         console.log('Invalid Credentials');
+                        this.setState({ validateStatus: 'error' })
                     }
+                    this.setState({ iconLoading: false, showModal: false, currentStep: 0 });
                 })
                 .catch(err => {
                     console.log(err);
@@ -76,20 +93,22 @@ class NormalLoginForm extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { validateStatus, iconLoading, showModal, currentStep } = this.state;
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
-                <FormItem hasFeedback validateStatus="validating" className="login-form-input">
+                <FormItem hasFeedback validateStatus={validateStatus} className="login-form-input">
                     {getFieldDecorator('userName', {
                         rules: [{ required: true, message: 'Please input your username!' }],
                     })(
-                        <Input onChange={this.handleUnameChange} prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                        <Input size="large" onChange={this.handleUnameChange} prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Ebridge Username"/>
                     )}
                 </FormItem>
-                <FormItem className="login-form-input">
+                <FormItem hasFeedback validateStatus={validateStatus} className="login-form-input">
                     {getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                     })(
-                        <Input onChange={this.handlePswChange} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                        <Input size="large" onChange={this.handlePswChange} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password"/>
                     )}
                 </FormItem>
                 <FormItem>
@@ -103,10 +122,11 @@ class NormalLoginForm extends Component {
                         className="login-form-forgot" 
                         href="https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/siw_pqs.forgot?"
                     >Forgot password</a>  
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        Log in
+                    <Button size="large" loading={iconLoading} type="primary" htmlType="submit" className="login-form-button">
+                         LOGIN
                     </Button>
                 </FormItem>
+                <ProgressModal visible={showModal} currentStep={currentStep} />
             </Form>
         );
     }

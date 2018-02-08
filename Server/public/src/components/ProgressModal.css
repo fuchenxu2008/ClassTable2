@@ -1,0 +1,9 @@
+.progress-modal .ant-modal-body {
+    padding: 30px;
+}
+
+@media (max-width: 768px) {
+    .ant-modal {
+        margin: 45px;
+    }
+}

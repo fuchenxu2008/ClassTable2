@@ -35,11 +35,11 @@ module.exports = {
         var redirectURL = $('#siw_portal_url').val();
         if (redirectURL === undefined) {
             console.log('Failed to login!');
-            socket.io.emit(socket.id, 'Failed to login!');
+            socket.io.emit(socket.id, '-1');
             throw 'Failed to login!';
         }
         console.log('Redirecting to Portal...');
-        socket.io.emit(socket.id, 'Redirecting to Portal...');
+        socket.io.emit(socket.id, '0');
 
         // Redirect to portal home page
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${redirectURL}`, jar})
@@ -54,15 +54,15 @@ module.exports = {
         var $ = cheerio.load(portal);
         const timeTablePageURL = $('#TIMETABLE').attr('href');
         var body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTablePageURL}`, jar})
-        console.log('Entering classTable page...');
-        socket.io.emit(socket.id, 'Entering classTable page...');
+        console.log('Entering classTable Page');
+        socket.io.emit(socket.id, '1');
 
         $ = cheerio.load(body);
         const timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href').substring(7);
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');
-        socket.io.emit(socket.id, 'Got table!');
+        socket.io.emit(socket.id, 'Got table');
 
         const table = body;
         return table;

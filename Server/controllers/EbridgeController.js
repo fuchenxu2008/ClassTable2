@@ -80,6 +80,13 @@ module.exports = {
                 }
             });
         })
+    },
+
+    getDownloads(req, res) {
+        Download.count({}, (err, count) => {
+            if (err) { return res.status(400).send('Something went wrong...') }
+            return res.json({ count });
+        })
     }
 
 }

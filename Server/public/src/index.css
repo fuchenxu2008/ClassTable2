@@ -1,21 +1,45 @@
-body, html {
-  font-family: sans-serif;
-  height: 100%;
-  width: 100%;
-  /* overflow: scroll; */
-  background-color: rgb(255, 255, 255);
+@media (max-width: 768px) {
+  body, html {
+    font-family: sans-serif;
+    width: 100%;
+    /* overflow: scroll; */
+    background-color: rgb(255, 255, 255);
+  }
+
+  .container {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 1px 60px rgb(201, 201, 201);
+    position: absolute;
+    top: 5%;
+    /* bottom: 5%; */
+    left: 5%;
+    right: 5%;
+    overflow: auto;
+    margin-bottom: 30px;
+  }
 }
 
-.container {
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0px 1px 60px rgb(201, 201, 201);
-  position: absolute;
-  top: 5%;
-  bottom: 5%;
-  left: 5%;
-  right: 5%;
-  overflow: hidden;
+@media (min-width: 768px) {
+  body, html {
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+    /* overflow: scroll; */
+    background-color: rgb(255, 255, 255);
+  }
+    
+  .container {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 1px 60px rgb(201, 201, 201);
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+    overflow: hidden;
+  }
 }
 
 .ant-row {
@@ -30,4 +54,9 @@ body, html {
   color: rgb(37, 146, 252);
   font-size: 2.5em;
   text-align: center;
+}
+
+.divider .ant-divider-inner-text {
+  color: rgb(196, 196, 196);
+  font-size: 14px;
 }

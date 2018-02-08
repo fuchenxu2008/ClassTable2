@@ -1,7 +1,7 @@
 .login-form {
-    /* max-width: 300px; */
     padding: 15%;
     padding-top: 10%;
+    padding-bottom: 0;
 }
 
 .login-form-input {
@@ -15,4 +15,9 @@
 .login-form-button {
     width: 100%;
     margin-top: 20px;
+    box-shadow: 0px 10px 20px rgb(113, 191, 255);
+}
+
+.login-form-button span {
+    font-weight: bold;
 }

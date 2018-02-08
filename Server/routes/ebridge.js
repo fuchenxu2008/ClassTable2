@@ -6,4 +6,6 @@ router.post('/class', ebridgeController.getClass);
 
 router.get('/download/:token', ebridgeController.downloadCalendar);
 
+router.get('/count', ebridgeController.getDownloads)
+
 module.exports = router;
