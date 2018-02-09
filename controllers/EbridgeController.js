@@ -3,14 +3,17 @@ var fs = require('fs');
 const jwt = require('jsonwebtoken');
 var moment = require('moment');
 const config = require('../config');
-var Download = require('../models/Download');
+const Download = require('../models/Download');
+const Visit = require('../models/Visit');
+
 
 module.exports = {
 
     async getClass(req, res) {
         const io = req.app.get('socketio');
-        const uname = req.body.uname;
-        const psw = req.body.psw;
+        const credential = jwt.verify(req.body.credentialToken, config.secret);
+        const uname = credential.uname;
+        const psw = credential.psw;
         const socketId = req.body.socketId;
         const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
         try {
@@ -25,9 +28,7 @@ module.exports = {
         // Save token to download in db
         Download.create({ token }, (err) => {
             if (err) return res.send(err);
-            res.send({
-                token
-            });
+            res.send({ token, rawClass });
         })
     },
 
@@ -83,6 +84,15 @@ module.exports = {
     },
 
     getDownloads(req, res) {
+        const newVisit = req.body.newVisit;
+        const userAgent = req.body.userAgent;
+        if (newVisit) {
+            Visit.create({
+                userAgent, time: moment().format('YYYY-MM-DD hh:mm:ss')
+            }, (err) => {
+                if (err) console.log(err);
+            })
+        }
         Download.count({}, (err, count) => {
             if (err) { return res.status(400).send('Something went wrong...') }
             return res.json({ count });

@@ -74,22 +74,22 @@ export default class Description extends Component {
                                 <h2>灵感来源</h2>
 
                                 <p>在过去，新学期公布课表时，我们常常只能在E-bridge上把课表截图存在相册中, 然后不得不经常反复的去相册翻看自己的课表又或是把其设置为手机锁屏壁纸来获知接下来的课程安排。 有些同学还会手动一条一条地把课表输进日历里去，但是那真的是太麻烦了。
-                                现在通过这个实用的小工具，您可以一次性把自己所有的课程添加至日历，而操作过程仅仅是登录验证，然后你就可以轻松的通过手机通知中心，智能手表等其他工具快速的查看管理自己接下来的日程！不仅更方便，而且更加简单。</p>
+                                现在通过这个实用的小工具，<span className="emphasis-text">您可以一次性把自己所有的课程添加至日历</span>，而操作过程仅仅是登录验证，<span className="emphasis-text">然后你就可以轻松的通过手机通知中心，智能手表等其他工具快速的查看管理自己接下来的日程！</span>不仅更方便，而且更加简单。</p>
 
                                 <h2>联系方式</h2>
 
                                 <p>
-                                感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
+                                嗨！我是西浦大三软工的傅晨旭，感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
                                 如果您遇到了任何问题，发现了错误或有其他需求，可以通过以下两种方式联系我~<br/>
                                 如果您觉得本工具很好用，欢迎帮忙转发支持哈 :)
                                 </p>
 
                                 <Row gutter={24} className="modal-button-row">
                                     <Col xs={24} sm={12} md={15} className="modal-button-col">
-                                        <Button ghost size="large" className="help-modal-button-email" type="primary"><Icon type="mail" /> fuchenxu2008@163.com</Button>
+                                        <Button ghost size="large" className="help-modal-button-email" type="primary" href="mailto:fuchenxu2008@163.com"><Icon type="mail" /> fuchenxu2008@163.com</Button>
                                     </Col>
                                     <Col xs={24} sm={12} md={9} style={{ textAlign: 'right' }} className="modal-button-col">
-                                        <Button ghost size="large" className="help-modal-button-wechat" type="primary"><Icon type="wechat" /> fuchenxu2008</Button>
+                                        <Button ghost size="large" className="help-modal-button-wechat" type="primary" href='wechat://'><Icon type="wechat" /> fuchenxu2008</Button>
                                     </Col>
                                 </Row>
 

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import LoginPanel from './containers/LoginPanel';
+import LoginPanel from './components/LoginPanel';
 import Display from './components/Display';
 import Description from './components/Description';
+import config from './config';
 
 import { Row, Col } from 'antd';
 import { Divider } from 'antd';
@@ -18,7 +19,15 @@ class App extends Component {
     }
 
     getDownloads() {
-        axios.get('http://192.168.1.101:3001/ebridge/count')
+        let newVisit;
+        if (sessionStorage.getItem('visit')) {
+            newVisit = false;
+        } else {
+            sessionStorage.setItem('visit', 'user');
+            newVisit = true;
+        }
+        const userAgent = window.navigator.userAgent;
+        axios.post(`${config.domain}/ebridge/count`, { newVisit, userAgent })
             .then(res => {
                 this.setState({ downloads: res.data.count })
             })

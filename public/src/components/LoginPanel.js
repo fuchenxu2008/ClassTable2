@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
+import jwt from 'jsonwebtoken';
 import './LoginPanel.css';
-
+import config from '../config';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import ProgressModal from '../components/ProgressModal';
+import ProgressModal from './ProgressModal';
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
@@ -60,7 +61,7 @@ class NormalLoginForm extends Component {
                     localStorage.clear();
                 }
 
-                const socket = io.connect('http://192.168.1.101:3001');
+                const socket = io.connect(config.domain);
                 const socketId = uuidv4();
 
                 socket.on(socketId, (data) => {
@@ -71,10 +72,12 @@ class NormalLoginForm extends Component {
                     }
                 })
 
-                axios.post('http://192.168.1.101:3001/ebridge/class', {
-                    uname: this.state.uname,
-                    psw: this.state.psw,
-                    socketId
+                const credentialToken = jwt.sign({ 
+                    uname: this.state.uname, psw: this.state.psw 
+                }, config.secret);
+
+                axios.post(`${config.domain}/ebridge/class`, {
+                    credentialToken, socketId
                 })
                 .then(res => {
                     console.log(res);
@@ -84,9 +87,10 @@ class NormalLoginForm extends Component {
                             localStorage.setItem('userCredential', JSON.stringify({
                                 uname: this.state.uname,
                                 psw: this.state.psw
-                            })) 
+                            }));
+                            localStorage.setItem('classes', JSON.stringify(res.data.rawClass));
                         }
-                        window.location.href = `http://192.168.1.101:3001/ebridge/download/${res.data.token}`;
+                        window.location.href = `${config.domain}/ebridge/download/${res.data.token}`;
                     } else {
                         console.log('Invalid Credentials');
                         this.setState({ validateStatus: 'error' })

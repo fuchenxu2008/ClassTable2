@@ -10,4 +10,4 @@ Todo-list:
 - [ ] Front-end UI Card-calendar design
 - [ ] ICAL.js integration to visualize daily event
 - [ ] Customizable Emoji
-- [ ] Show downloads count and views count
+- [x] Show downloads count and views count

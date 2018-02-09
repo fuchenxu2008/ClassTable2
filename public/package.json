@@ -6,6 +6,7 @@
     "antd": "^3.2.0",
     "axios": "^0.17.1",
     "babel-plugin-import": "^1.6.3",
+    "jsonwebtoken": "^8.1.1",
     "react": "^16.2.0",
     "react-app-rewired": "^1.4.1",
     "react-dom": "^16.2.0",

@@ -3,7 +3,7 @@
 }
 
 @media (max-width: 768px) {
-    /* .ant-modal {
-        margin: 45px;
-    } */
+    .progress-modal .ant-modal {
+        margin: 45px !important;
+    }
 }
