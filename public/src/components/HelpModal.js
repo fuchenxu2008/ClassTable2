@@ -12,7 +12,7 @@ class HelpModal extends Component {
                 onOk={this.props.onClose}
                 onCancel={this.props.onClose}
             >
-                <p>{this.props.children}</p>
+                {this.props.children}
             </Modal>
         );
     }
