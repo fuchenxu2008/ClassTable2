@@ -16,12 +16,14 @@ module.exports = {
         const psw = credential.psw;
         const socketId = req.body.socketId;
         const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
+
+        let rawClass;
         try {
             await ebridgeSession.login();
+            rawClass = await ebridgeSession.getClass();
         } catch (err) {
             return res.send(err);
         }
-        const rawClass = await ebridgeSession.getClass();
         const iCalendar = ebridgeSession.makeCalendar();
 
         const token = jwt.sign(uname, config.secret);

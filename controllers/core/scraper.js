@@ -58,7 +58,14 @@ module.exports = {
         socket.io.emit(socket.id, '1');
 
         $ = cheerio.load(body);
-        const timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href').substring(7);
+
+        let timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href');
+        if (timeTableURL === undefined) {
+            console.log('No Class');
+            socket.io.emit(socket.id, '-1');
+            throw 'No Class!';
+        }
+        timeTableURL = timeTableURL.substring(7);
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');
