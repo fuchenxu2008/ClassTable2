@@ -95,9 +95,9 @@ module.exports = {
                 if (err) console.log(err);
             })
         }
-        Download.count({}, (err, count) => {
+        Download.distinct('username', (err, users) => {
             if (err) { return res.status(400).send('Something went wrong...') }
-            return res.json({ count });
+            return res.json({ count: users.length });
         })
     }
 

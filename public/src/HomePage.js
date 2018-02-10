@@ -8,7 +8,7 @@ import config from './config';
 import { Row, Col } from 'antd';
 import { Divider } from 'antd';
 
-class App extends Component {
+class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -54,7 +54,7 @@ class App extends Component {
                     <Col lg={15} md={12}><Display height={this.state.containerHeight} /></Col>
                     <Col xs={24}>
                         <Divider className="divider" dashed>
-                             Downloads: {this.state.downloads}   
+                            Downloads: {this.state.downloads}   
                         </Divider>
                     </Col>
                     </Row>
@@ -63,4 +63,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default HomePage;
