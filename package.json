@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "serve": "forever start ./bin/www"
+    "prod": "forever start ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

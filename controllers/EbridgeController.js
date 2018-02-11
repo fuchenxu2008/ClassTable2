@@ -48,59 +48,37 @@ module.exports = {
             // Decode token, extract filename
             try {
                 const { uname } = jwt.verify(download.token, config.secret);
+                // Download file
+                const fileName = `${uname}.ics`;
+                const filePath = `${__root}/calendars/${fileName}`;
+                var stats = fs.statSync(filePath);
+                if (stats.isFile()) {
+                    console.log(`Sending file...`);
+                    res.download(filePath, fileName, (err) => {
+                        if (err) {
+                            return res.status(400).send('Something went wrong...')
+                        } else {
+                            console.log('Operation completed.');
+                        }
+                    })
+                } else {
+                    return res.end(404);
+                }
+
+                // Log download, destroy old token in DB
+                download.username = uname;
+                // download.token = undefined;
+                download.time = moment().format('YYYY-MM-DD hh:mm:ss');
+                download.save((err) => {
+                    if (err) {
+                        return res.status(400).send('Something went wrong...')
+                    }
+                });
             } catch (error) {
                 return res.status(400).json({
                     message: 'Invalid token!!!'
                 });
             }   
-            // Download file
-            const fileName = `${uname}.ics`;
-            const filePath = `${__root}/calendars/${fileName}`;
-            var stats = fs.statSync(filePath);
-            if (stats.isFile()) {
-                console.log(`Sending file...`);
-                res.download(filePath, fileName, (err) => {
-                    if (err) {
-                        return res.status(400).send('Something went wrong...')
-                    } else {
-                        // fs.unlink(filePath, (err) => {
-                        //     if (err) {
-                        //         console.log('Failed to delete file.');
-                        //     }
-                        //     console.log('Operation completed.');
-                        // });
-                        console.log('Operation completed.');
-                    }
-                })
-                // res.set({
-                //     'Content-Type': 'application/octet-stream',
-                //     'Content-Disposition': 'attachment; filename=' + fileName,
-                //     'Content-Length': stats.size
-                // });
-                // var stream = fs.createReadStream(filePath)
-                // stream.pipe(res);
-                // // and delete file
-                // stream.on('close', () => {
-                //     fs.unlink(filePath, (err) => {
-                //         if (err) {
-                //             console.log('Failed to delete file.');
-                //         }
-                //         console.log('Operation completed.');
-                //     });
-                // })
-            } else {
-                return res.end(404);
-            }
-
-            // Log download, destroy old token in DB
-            download.username = uname;
-            // download.token = undefined;
-            download.time = moment().format('YYYY-MM-DD hh:mm:ss');
-            download.save((err) => {
-                if (err) {
-                    return res.status(400).send('Something went wrong...')
-                }
-            });
         })
     },
 
