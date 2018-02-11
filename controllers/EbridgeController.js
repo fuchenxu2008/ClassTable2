@@ -46,7 +46,13 @@ module.exports = {
             }
 
             // Decode token, extract filename
-            const { uname } = jwt.verify(download.token, config.secret);
+            try {
+                const { uname } = jwt.verify(download.token, config.secret);
+            } catch (error) {
+                return res.status(400).json({
+                    message: 'Invalid token!!!'
+                });
+            }   
             // Download file
             const fileName = `${uname}.ics`;
             const filePath = `${__root}/calendars/${fileName}`;
