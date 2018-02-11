@@ -53,22 +53,34 @@ module.exports = {
             var stats = fs.statSync(filePath);
             if (stats.isFile()) {
                 console.log(`Sending file...`);
-                res.set({
-                    'Content-Type': 'application/octet-stream',
-                    'Content-Disposition': 'attachment; filename=' + fileName,
-                    'Content-Length': stats.size
-                });
-                var stream = fs.createReadStream(filePath)
-                stream.pipe(res);
-                // and delete file
-                stream.on('close', () => {
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.log('Failed to delete file.');
-                        }
-                        console.log('Operation completed.');
-                    });
+                res.download(filePath, fileName, (err) => {
+                    if (err) {
+                        return res.status(400).send('Something went wrong...')
+                    } else {
+                        fs.unlink(filePath, (err) => {
+                            if (err) {
+                                console.log('Failed to delete file.');
+                            }
+                            console.log('Operation completed.');
+                        });
+                    }
                 })
+                // res.set({
+                //     'Content-Type': 'application/octet-stream',
+                //     'Content-Disposition': 'attachment; filename=' + fileName,
+                //     'Content-Length': stats.size
+                // });
+                // var stream = fs.createReadStream(filePath)
+                // stream.pipe(res);
+                // // and delete file
+                // stream.on('close', () => {
+                //     fs.unlink(filePath, (err) => {
+                //         if (err) {
+                //             console.log('Failed to delete file.');
+                //         }
+                //         console.log('Operation completed.');
+                //     });
+                // })
             } else {
                 return res.end(404);
             }
