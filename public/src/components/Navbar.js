@@ -20,6 +20,7 @@ class Navbar extends Component {
             this.setState({ current: 'back' });
         } else if (current === 'trash') {
             localStorage.clear();
+            sessionStorage.removeItem('classes');
             message.success('Local data trashed', 3);
             this.setState({ current: 'back' });
         }
@@ -27,7 +28,7 @@ class Navbar extends Component {
 
     render() {
         if (this.state.current === 'back') return <Redirect to='/' />;
-                
+
         return (
             <Menu
                 onClick={this.handleClick}

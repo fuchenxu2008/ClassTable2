@@ -94,6 +94,7 @@ class NormalLoginForm extends Component {
                             if (remember) {
                                 localStorage.setItem('userCredential', JSON.stringify({ uname, psw }));
                                 localStorage.setItem('classes', JSON.stringify(res.data.rawClass));
+                                sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
                             } else {
                                 sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
                             }
