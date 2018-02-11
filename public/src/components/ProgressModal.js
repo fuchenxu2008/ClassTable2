@@ -13,8 +13,8 @@ class ProgressModal extends Component {
             { title: 'Prepare', icon: 'calendar' },
             { title: 'Done', icon: 'download' }
         ];
-        let steps = [];
-        defaultSteps.forEach((step, index) => {
+
+        const steps = defaultSteps.map((step, index) => {
             let status = 'wait',
                 stepIcon = step.icon;
             if (index < currentStep) {
@@ -25,7 +25,7 @@ class ProgressModal extends Component {
                 status = 'process';
                 stepIcon = 'loading';
             }
-            steps.push(
+            return (
                 <Step key={step.title} status={status} title={step.title} icon={<Icon type={stepIcon} />} />
             )
         })

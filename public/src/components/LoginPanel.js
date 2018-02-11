@@ -3,10 +3,12 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
 import jwt from 'jsonwebtoken';
+import { Redirect } from 'react-router-dom';
 import './LoginPanel.css';
 import config from '../config';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import ProgressModal from './ProgressModal';
+import { Form, Icon, Input, Button, Checkbox, Modal, message } from 'antd';
+const confirm = Modal.confirm;
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
@@ -19,9 +21,11 @@ class NormalLoginForm extends Component {
             validateStatus: '',
             iconLoading: false,
             showModal: false,
-            currentStep: 0
+            currentStep: 0,
+            redirect: false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.login = this.login.bind(this);
         this.handleUnameChange = this.handleUnameChange.bind(this);
         this.handlePswChange = this.handlePswChange.bind(this);
         this.handleRememberChange = this.handleRememberChange.bind(this);
@@ -51,19 +55,28 @@ class NormalLoginForm extends Component {
         this.setState({ remember: e.target.checked });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
+    showConfirm() {
+        confirm({
+            title: `Welcome back ${this.state.uname} !`,
+            content: `Local calendar found, directly go to your calendar? or 'Cancel' to refresh.`,
+            onOk: () => {
+                this.setState({ redirect: true })
+            },
+            onCancel: () => { this.login(); },
+        });
+    }
+
+    login() {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({ iconLoading: true, showModal: true })
-
-                if (!this.state.remember) {
+                const { uname, psw, remember } = this.state;
+                if (!remember) {
                     localStorage.clear();
                 }
 
                 const socket = io.connect(config.domain);
                 const socketId = uuidv4();
-
                 socket.on(socketId, (data) => {
                     if (!isNaN(parseInt(data, 10))) {
                         const currentStep = parseInt(data, 10);
@@ -72,42 +85,52 @@ class NormalLoginForm extends Component {
                     }
                 })
 
-                const credentialToken = jwt.sign({ 
-                    uname: this.state.uname, psw: this.state.psw 
-                }, config.secret);
+                const credentialToken = jwt.sign({ uname, psw }, config.secret);
 
-                axios.post(`${config.domain}/ebridge/class`, {
-                    credentialToken, socketId
-                })
-                .then(res => {
-                    console.log(res);
-                    if (res.data.token) {
-                        this.setState({ validateStatus: 'success' })
-                        if (this.state.remember) {
-                            localStorage.setItem('userCredential', JSON.stringify({
-                                uname: this.state.uname,
-                                psw: this.state.psw
-                            }));
-                            localStorage.setItem('classes', JSON.stringify(res.data.rawClass));
+                axios.post(`${config.domain}/ebridge/class`, { credentialToken, socketId })
+                    .then(res => {
+                        this.setState({ iconLoading: false, showModal: false, currentStep: 0 });
+                        if (res.data.token) {
+                            if (remember) {
+                                localStorage.setItem('userCredential', JSON.stringify({ uname, psw }));
+                                localStorage.setItem('classes', JSON.stringify(res.data.rawClass));
+                            } else {
+                                sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
+                            }
+                            this.setState({ validateStatus: 'success', redirect: true });
+                            const ua = navigator.userAgent.toLowerCase();
+                            if (ua.match(/MicroMessenger/i) === "micromessenger") {
+                                message.warning('WeChat blocked the download !', 3);
+                            }
+                            window.location.href = `${config.domain}/ebridge/download/${res.data.token}`;
+                        } else {
+                            this.setState({ validateStatus: 'error' })
                         }
-                        window.location.href = `${config.domain}/ebridge/download/${res.data.token}`;
-                    } else {
-                        console.log('Invalid Credentials');
-                        this.setState({ validateStatus: 'error' })
-                    }
-                    this.setState({ iconLoading: false, showModal: false, currentStep: 0 });
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             }
         });
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+
+        const cachedCredential = localStorage.getItem('userCredential');
+        if (cachedCredential && localStorage.getItem('classes')) {
+            if (JSON.parse(cachedCredential).uname === this.state.uname) {
+                this.showConfirm();
+            } else this.login();
+        } else this.login();
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { validateStatus, iconLoading, showModal, currentStep } = this.state;
+        const { validateStatus, iconLoading, showModal, currentStep, redirect } = this.state;
 
+        if (redirect) return <Redirect to='/myclass' /> ;
+        
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem hasFeedback validateStatus={validateStatus} className="login-form-input">

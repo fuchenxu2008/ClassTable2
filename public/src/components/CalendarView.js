@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+
+import './CalendarView.css';
 import { Calendar } from 'antd';
+
+moment.locale('zh-cn', {
+    week: {
+        dow: 1 // Monday is the first day of the week
+    }
+});
 
 class CalendarView extends Component {
     state = {
@@ -13,6 +21,7 @@ class CalendarView extends Component {
             value,
             selectedValue: value,
         });
+        this.props.onSelect(value);
     }
     onPanelChange = (value) => {
         this.setState({ value });
@@ -20,9 +29,8 @@ class CalendarView extends Component {
 
     render() {
         return (
-            <div style={{ width: '100%', border: '1px solid #d9d9d9', borderRadius: 4 }}>
+            <div className="calendar-selector">
                 <Calendar fullscreen={false} onSelect={this.onSelect} onPanelChange={this.onPanelChange} />
-                <button onClick={() => console.log(this.state)}>Show State</button>    
             </div>
         );
     }

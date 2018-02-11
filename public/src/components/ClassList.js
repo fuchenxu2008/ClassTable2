@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import './ClassList.css';
 import ClassCard from './ClassCard';
+import { Icon } from 'antd';
 
 class ClassList extends Component {
 
@@ -14,7 +16,9 @@ class ClassList extends Component {
                                 <ClassCard key={index} Class={Class} />
                             )
                         })
-                    :   'No class'
+                    :   <div className="no-class">
+                            <Icon type="coffee" /> No class, take a break ～
+                        </div>
                 }
             </div>
         );
