@@ -7,19 +7,23 @@ class ClassList extends Component {
 
     render() {
         const { classes } = this.props;
+        
+        let content = <div className="no-class"><Icon type="coffee" /> No class, take a break ～</div>
+        if (classes.length > 0) {
+            if (classes[0].holiday) {
+                content = <div className="no-class"><Icon type="schedule" /> {classes[0].holiday}</div>
+            } else {
+                content = classes.map((Class, index) => {
+                    return (
+                        <ClassCard key={index} Class={Class} />
+                    )
+                })
+            }
+        }
+
         return (
             <div>
-                {
-                    classes.length > 0
-                    ?   classes.map((Class, index) => {
-                            return (
-                                <ClassCard key={index} Class={Class} />
-                            )
-                        })
-                    :   <div className="no-class">
-                            <Icon type="coffee" /> No class, take a break ～
-                        </div>
-                }
+                { content }
             </div>
         );
     }

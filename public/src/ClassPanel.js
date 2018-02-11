@@ -4,6 +4,7 @@ import { Divider } from 'antd';
 import Navbar from './components/Navbar';
 import CalendarView from './components/CalendarView';
 import ClassList from './components/ClassList';
+import config from './config';
 
 moment.locale('zh-cn', {
     week: {
@@ -61,17 +62,29 @@ class ClassPanel extends Component {
 
     getClassesOfDay() {
         const { classTable, selected_date } = this.state;
+        const week = this.getWeek();
+        
         let classesOfDay = [];
-        // Monday 0 -- Friday 4
-        Object.keys(classTable).forEach((weekDay, index) => {
-            if (index === selected_date.weekday()) {          
-                classesOfDay = classTable[weekDay].classes;
-            }
-        });
-        classesOfDay = classesOfDay.filter(Class => {
-            return this.getInterval(Class.period).includes(this.getWeek());
-        })
-        this.setState({ classesOfDay, selected_week: this.getWeek() }); 
+        if (week.toString() in config.holidays.weeks) {
+            classesOfDay.push({
+                holiday: config.holidays.weeks[week.toString()]
+            });
+        } else if (selected_date.format("YYYY-MM-DD") in config.holidays.days) {
+            classesOfDay.push({
+                holiday: config.holidays.days[selected_date.format("YYYY-MM-DD")]
+            });
+        } else {
+            // Monday 0 -- Friday 4
+            Object.keys(classTable).forEach((weekDay, index) => {
+                if (index === selected_date.weekday()) {          
+                    classesOfDay = classTable[weekDay].classes;
+                }
+            });
+            classesOfDay = classesOfDay.filter(Class => {
+                return this.getInterval(Class.period).includes(week);
+            })
+        }
+        this.setState({ classesOfDay, selected_week: week }); 
     }
 
     async componentDidMount() {
