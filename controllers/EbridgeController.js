@@ -47,7 +47,8 @@ module.exports = {
 
             // Decode token, extract filename
             try {
-                const { uname } = jwt.verify(download.token, config.secret);
+                let { uname } = jwt.verify(download.token, config.secret);
+                uname = uname.toLowerCase();
                 // Download file
                 const fileName = `${uname}.ics`;
                 const filePath = `${__root}/calendars/${fileName}`;
