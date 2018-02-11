@@ -88,7 +88,7 @@ module.exports = {
 
             // Log download, destroy old token in DB
             download.username = uname;
-            download.token = undefined;
+            // download.token = undefined;
             download.time = moment().format('YYYY-MM-DD hh:mm:ss');
             download.save((err) => {
                 if (err) {
