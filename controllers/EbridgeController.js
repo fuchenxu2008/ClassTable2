@@ -26,7 +26,7 @@ module.exports = {
         }
         const iCalendar = ebridgeSession.makeCalendar();
 
-        const token = jwt.sign(uname, config.secret);
+        const token = jwt.sign(uname, config.secret, { expireIn: 1000 * 60 * 5 });
         // Save token to download in db
         Download.create({ token }, (err) => {
             if (err) return res.send(err);
@@ -57,12 +57,13 @@ module.exports = {
                     if (err) {
                         return res.status(400).send('Something went wrong...')
                     } else {
-                        fs.unlink(filePath, (err) => {
-                            if (err) {
-                                console.log('Failed to delete file.');
-                            }
-                            console.log('Operation completed.');
-                        });
+                        // fs.unlink(filePath, (err) => {
+                        //     if (err) {
+                        //         console.log('Failed to delete file.');
+                        //     }
+                        //     console.log('Operation completed.');
+                        // });
+                        console.log('Operation completed.');
                     }
                 })
                 // res.set({
