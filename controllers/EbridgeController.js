@@ -37,7 +37,7 @@ module.exports = {
     downloadCalendar(req, res) {
         // Authenticate token
         Download.findOne({
-            token: req.params.token
+            token: req.query.token
         }, (err, download) => {
             if (err || !download) {
                 return res.status(400).json({

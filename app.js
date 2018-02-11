@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 global.__root = __dirname;
-app.use(express.static(path.join(__dirname, 'public/build')));
+// app.use(express.static(path.join(__dirname, 'public/build')));
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
 app.use(function (req, res, next) {
@@ -38,5 +38,10 @@ var io = require('socket.io')(server);
 app.set('socketio', io);
 
 app.use('/ebridge', ebridge);
+app.use(express.static(path.join(__dirname, 'public/build')));
+// Always return the main index.html, so react-router render the route in the client
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/build/index.html'));
+});
 
 module.exports = { app, server };

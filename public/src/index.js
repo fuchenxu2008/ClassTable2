@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './index.css';
 import HomePage from './HomePage';
 import ClassPanel from './ClassPanel';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -15,7 +15,7 @@ ReactDOM.render(
     </BrowserRouter>, 
     document.getElementById('root')
 );
-registerServiceWorker();
+// registerServiceWorker();
 
 if (module.hot) {
     module.hot.accept();
