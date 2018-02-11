@@ -26,7 +26,7 @@ module.exports = {
         }
         const iCalendar = ebridgeSession.makeCalendar();
 
-        const token = jwt.sign(uname, config.secret, { expiresIn: 1000 * 60 * 5 });
+        const token = jwt.sign(uname, config.secret, { expiresIn: 300 });
         // Save token to download in db
         Download.create({ token }, (err) => {
             if (err) return res.send(err);
