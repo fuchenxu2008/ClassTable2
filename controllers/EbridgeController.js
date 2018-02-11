@@ -26,7 +26,7 @@ module.exports = {
         }
         const iCalendar = ebridgeSession.makeCalendar();
 
-        const token = jwt.sign(uname, config.secret, { expiresIn: '5m' });
+        const token = jwt.sign({ uname }, config.secret, { expiresIn: '5m' });
         // Save token to download in db
         Download.create({ token }, (err) => {
             if (err) return res.send(err);
@@ -46,9 +46,9 @@ module.exports = {
             }
 
             // Decode token, extract filename
-            const username = jwt.verify(download.token, config.secret);
+            const { uname } = jwt.verify(download.token, config.secret);
             // Download file
-            const fileName = `${username}.ics`;
+            const fileName = `${uname}.ics`;
             const filePath = `${__root}/calendars/${fileName}`;
             var stats = fs.statSync(filePath);
             if (stats.isFile()) {
@@ -87,7 +87,7 @@ module.exports = {
             }
 
             // Log download, destroy old token in DB
-            download.username = username;
+            download.username = uname;
             download.token = undefined;
             download.time = moment().format('YYYY-MM-DD hh:mm:ss');
             download.save((err) => {
