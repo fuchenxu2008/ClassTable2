@@ -98,8 +98,7 @@ class NormalLoginForm extends Component {
                                 sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
                             }
                             this.setState({ validateStatus: 'success', redirect: true });
-                            const ua = navigator.userAgent.toLowerCase();
-                            if (ua.match(/MicroMessenger/i) === "micromessenger") {
+                            if (ua.match(/MicroMessenger/i) == "micromessenger") {
                                 message.warning('WeChat blocked the download !', 3);
                             }
                             window.location.href = `${config.domain}/ebridge/download/${res.data.token}`;

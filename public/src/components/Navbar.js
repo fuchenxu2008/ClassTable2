@@ -9,10 +9,7 @@ class Navbar extends Component {
     }
 
     handleClick = (e) => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
+        this.setState({ current: e.key });
     }
 
     componentDidUpdate() {
@@ -30,7 +27,7 @@ class Navbar extends Component {
 
     render() {
         if (this.state.current === 'back') return <Redirect to='/' />;
-
+                
         return (
             <Menu
                 onClick={this.handleClick}
@@ -40,7 +37,7 @@ class Navbar extends Component {
                 mode="horizontal"
             >
                 <Menu.Item key="back"><Icon type="left" />Return to HomePage</Menu.Item>
-                <SubMenu style={{ float: 'right' }} title={<span><Icon type="setting" />Settings</span>}>
+                <SubMenu key="settings" style={{ float: 'right' }} title={<span><Icon type="setting" />Settings</span>}>
                     <Menu.Item key="refresh"><Icon type="reload" />Refresh ClassTable</Menu.Item>
                     <Menu.Item key="trash"><Icon type="delete" />Delete local data</Menu.Item>
                 </SubMenu>
