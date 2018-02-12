@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+// import io from 'socket.io-client';
+import uuidv4 from 'uuid/v4';
+import config from '../config';
 import { Redirect } from 'react-router-dom';
 import { Menu, Icon, message } from 'antd';
 const SubMenu = Menu.SubMenu;
@@ -12,12 +16,38 @@ class Navbar extends Component {
         this.setState({ current: e.key });
     }
 
+    refreshClass = (e) => {
+        message.info('Refreshing your classes ~', 8);
+        const userCredential = localStorage.getItem('userCredential') || sessionStorage.getItem('userCredential');
+        if (!userCredential) return;
+        const { uname, psw } = JSON.parse(userCredential);
+        // const socket = io.connect(config.domain);
+        const socketId = uuidv4();
+        axios.post(`${config.domain}/ebridge/class`, { uname, psw, socketId })
+            .then(res => {
+                if (res.data.rawClass) {
+                    const classTable = JSON.stringify(res.data.rawClass);
+                    if (localStorage.getItem('userCredential')) {
+                        localStorage.setItem('classes', classTable);
+                    }
+                    sessionStorage.setItem('classes', classTable);
+                    this.props.onRefresh(classTable);
+                    message.success('Refresh success!', 3);
+                } else {
+                    message.error('Refresh failed, maybe try login again?', 3);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                message.error('Refresh failed!', 3);
+            })
+    }
+
     componentDidUpdate() {
         const { current } = this.state;
         if (current === 'refresh') {
-            localStorage.removeItem('classes');
-            sessionStorage.removeItem('classes');
-            this.setState({ current: 'back' });
+            this.refreshClass();
+            this.setState({ current: '' })
         } else if (current === 'trash') {
             localStorage.clear();
             sessionStorage.removeItem('classes');

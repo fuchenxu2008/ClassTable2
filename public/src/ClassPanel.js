@@ -28,6 +28,7 @@ class ClassPanel extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.getWeek = this.getWeek.bind(this);
         this.getClassesOfDay = this.getClassesOfDay.bind(this);
+        this.refreshClass = this.refreshClass.bind(this);
     }
 
     getWeek() {
@@ -87,12 +88,13 @@ class ClassPanel extends Component {
         this.setState({ classesOfDay, selected_week: week }); 
     }
 
+    refreshClass(classTable) {
+        this.setState({ classTable })
+    }
+
     async componentDidMount() {
-        let classes = localStorage.getItem('classes');
-        if (!classes) { 
-            classes = sessionStorage.getItem('classes');
-            if (!classes) { return; }
-        }
+        const classes = localStorage.getItem('classes') || sessionStorage.getItem('classes');
+        if (!classes) return;
         await this.setState({ classTable: JSON.parse(classes) })
         this.getClassesOfDay();
     }
@@ -101,7 +103,7 @@ class ClassPanel extends Component {
         const { classesOfDay, selected_week } = this.state;
         return (
             <div>
-                <Navbar/>
+                <Navbar onRefresh={this.refreshClass}/>
                 <div className="classpanel">
                     <CalendarView onSelect={this.onSelect} />
                     {selected_week >= 1 && selected_week <= 14 &&

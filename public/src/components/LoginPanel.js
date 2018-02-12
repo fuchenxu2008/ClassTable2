@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
-import jwt from 'jsonwebtoken';
 import { Redirect } from 'react-router-dom';
 import './LoginPanel.css';
 import config from '../config';
@@ -85,19 +84,17 @@ class NormalLoginForm extends Component {
                     }
                 })
 
-                const credentialToken = jwt.sign({ uname, psw }, config.secret);
-
-                axios.post(`${config.domain}/ebridge/class`, { credentialToken, socketId })
+                axios.post(`${config.domain}/ebridge/class?download=yes`, { uname, psw, socketId })
                     .then(res => {
                         this.setState({ iconLoading: false, showModal: false, currentStep: 0 });
                         if (res.data.token) {
                             if (remember) {
                                 localStorage.setItem('userCredential', JSON.stringify({ uname, psw }));
                                 localStorage.setItem('classes', JSON.stringify(res.data.rawClass));
-                                sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
-                            } else {
-                                sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
-                            }
+                            } 
+                            sessionStorage.setItem('classes', JSON.stringify(res.data.rawClass));
+                            sessionStorage.setItem('userCredential', JSON.stringify({ uname, psw }));
+                            
                             this.setState({ validateStatus: 'success', redirect: true });
                             const ua = navigator.userAgent.toLowerCase();                            
                             if ((/MicroMessenger/i).test(ua)) {

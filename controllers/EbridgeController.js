@@ -11,26 +11,43 @@ module.exports = {
 
     async getClass(req, res) {
         const io = req.app.get('socketio');
-        const credential = jwt.verify(req.body.credentialToken, config.secret);
-        const uname = credential.uname;
-        const psw = credential.psw;
+        const uname = req.body.uname;
+        const psw = req.body.psw;
         const socketId = req.body.socketId;
         const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
 
-        let rawClass;
+        let rawClass = {};
         try {
             await ebridgeSession.login();
             rawClass = await ebridgeSession.getClass();
         } catch (err) {
             return res.send(err);
         }
-        const iCalendar = ebridgeSession.makeCalendar();
 
-        const token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
-        // Save token to download in db
-        Download.create({ token }, (err) => {
+        let download = new Download({
+            usrname: uname,
+            time: moment().format('YYYY-MM-DD hh:mm:ss')
+        });
+
+        let token = '';
+
+        if (req.query.download) {
+            console.log('want download');
+            
+            const iCalendar = ebridgeSession.makeCalendar();
+            // Save token to download in db
+            token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
+            download.token = token;
+            download.status = 'pending';
+        } else {
+            console.log('no download');
+            download.status = 'completed';
+        }
+        
+        download.save((err) => {
             if (err) return res.send(err);
-            res.send({ token, rawClass });
+            if (req.query.download) return res.send({ token, rawClass });
+            else return res.send({ rawClass });
         })
     },
 
@@ -67,13 +84,9 @@ module.exports = {
                 }
 
                 // Log download, destroy old token in DB
-                download.username = uname;
-                // download.token = undefined;
-                download.time = moment().format('YYYY-MM-DD hh:mm:ss');
+                download.status = 'completed';
                 download.save((err) => {
-                    if (err) {
-                        return res.status(400).send('Something went wrong...')
-                    }
+                    if (err) return res.status(400).send('Something went wrong...');
                 });
             } catch (error) {
                 return res.status(400).json({
