@@ -17,10 +17,11 @@ class Navbar extends Component {
     }
 
     refreshClass = (e) => {
-        message.info('Refreshing your classes ~', 8);
+        
         const userCredential = localStorage.getItem('userCredential') || sessionStorage.getItem('userCredential');
-        if (!userCredential) return;
+        if (!userCredential) return message.error('No credential provided, please go back.', 3);;
         const { uname, psw } = JSON.parse(userCredential);
+        message.info('Refreshing your classes ~', 8);
         // const socket = io.connect(config.domain);
         const socketId = uuidv4();
         axios.post(`${config.domain}/ebridge/class`, { uname, psw, socketId })

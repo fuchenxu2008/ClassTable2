@@ -12,6 +12,8 @@ moment.locale('zh-cn', {
     }
 });
 
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 function numberRange(start, end) {
     return new Array(end - start).fill().map((d, i) => i + start);
 }
@@ -23,7 +25,8 @@ class ClassPanel extends Component {
             classTable: {},
             classesOfDay: [],
             selected_date: moment(),
-            selected_week: 0
+            selected_week: 0,
+            selected_weekDay: weekDays[moment().isoWeekday() - 1],
         }
         this.onSelect = this.onSelect.bind(this);
         this.getWeek = this.getWeek.bind(this);
@@ -85,7 +88,11 @@ class ClassPanel extends Component {
                 return this.getInterval(Class.period).includes(week);
             })
         }
-        this.setState({ classesOfDay, selected_week: week }); 
+        this.setState({ 
+            classesOfDay, 
+            selected_week: week, 
+            selected_weekDay: weekDays[moment(selected_date).isoWeekday() - 1] 
+        }); 
     }
 
     refreshClass(classTable) {
@@ -100,14 +107,14 @@ class ClassPanel extends Component {
     }
 
     render() {
-        const { classesOfDay, selected_week } = this.state;
+        const { classesOfDay, selected_week, selected_weekDay } = this.state;
         return (
             <div>
                 <Navbar onRefresh={this.refreshClass}/>
                 <div className="classpanel">
                     <CalendarView onSelect={this.onSelect} />
                     {selected_week >= 1 && selected_week <= 14 &&
-                        <Divider>Week {selected_week}</Divider>
+                        <Divider className="week-indicator">Week {selected_week} <span className="weekDay-indicator"> {selected_weekDay}</span></Divider>
                     }
                     <ClassList classes={classesOfDay} />
                 </div>

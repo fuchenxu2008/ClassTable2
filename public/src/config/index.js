@@ -1,5 +1,5 @@
 export default {
-    domain: 'http://192.168.1.101:8080',
+    domain: 'https://class.kyrie.top',
     holidays: {
         weeks: { "7": "Midterm" },
         days: {

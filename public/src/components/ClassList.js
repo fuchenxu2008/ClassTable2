@@ -22,7 +22,7 @@ class ClassList extends Component {
         }
 
         return (
-            <div>
+            <div className="classList">
                 { content }
             </div>
         );
