@@ -25,7 +25,7 @@ module.exports = {
         }
 
         let download = new Download({
-            usrname: uname,
+            username: uname,
             time: moment().format('YYYY-MM-DD hh:mm:ss')
         });
 
