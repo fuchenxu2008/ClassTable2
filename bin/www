@@ -15,9 +15,9 @@ var config = require('../config');
 
 var port = normalizePort(config.port);
 
-const cluster_instance = process.env.NODE_APP_INSTANCE;
-if (cluster_instance) {
-  port = port + parseInt(cluster_instance, 10);
+const cluster_instance = parseInt(process.env.NODE_APP_INSTANCE, 10);
+if (!isNaN(cluster_instance)) {
+  port = port + cluster_instance;
 }
 
 app.set('port', port);
