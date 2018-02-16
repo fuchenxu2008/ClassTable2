@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans:700');
+@import "../assets/fonts/font_noto_sans.css";
 
 @media (min-width: 768px) {
     .display-img {

@@ -46,7 +46,7 @@
   max-height: 100%;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Pacifico');
+@import "./assets/fonts/font_pacifico.css";
 
 .banner {
   margin-top: 20%;

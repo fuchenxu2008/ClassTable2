@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Display.css';
+import cover_img from '../assets/images/page_cover.jpeg';
 
 export default class Display extends Component {
 
@@ -10,15 +11,11 @@ export default class Display extends Component {
             divHeight = this.props.height + 'px';
         }
         
-        const imgs = [
-            'https://images.unsplash.com/photo-1505759115705-e48bf15b15b6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=36c8d4b6e72bc8efb665956c314e5b89&auto=format&fit=crop&w=1652&q=80',
-            'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-0.3.5&s=c0ac25c3cd56ced9821b924fed4c3c43&auto=format&fit=crop&w=1650&q=80'
-        ]
         return (
             <div>
                 <div className="display-img"
                     style={{
-                        backgroundImage: `url(${imgs[1]})`,
+                        backgroundImage: `url(${cover_img})`,
                         paddingBottom: `${divHeight}`
                     }} />
                     
