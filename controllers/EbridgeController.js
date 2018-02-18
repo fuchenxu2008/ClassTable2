@@ -11,7 +11,7 @@ module.exports = {
 
     async getClass(req, res) {
         const io = req.app.get('socketio');
-        const uname = req.body.uname;
+        const uname = req.body.uname.toLowerCase();
         const psw = req.body.psw;
         const socketId = req.body.socketId;
         const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
@@ -65,7 +65,6 @@ module.exports = {
             // Decode token, extract filename
             try {
                 let { uname } = jwt.verify(download.token, config.secret);
-                uname = uname.toLowerCase();
                 // Download file
                 const fileName = `${uname}.ics`;
                 const filePath = `${__root}/calendars/${fileName}`;
