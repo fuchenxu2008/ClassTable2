@@ -41,3 +41,11 @@
 .modal-button-col {
     margin-bottom: 3%;
 }
+
+.new {
+    font-size: 10px;
+    color: rgb(224, 75, 75);
+    border: 1px solid rgb(224, 75, 75);
+    border-radius: 10px;
+    padding: 0px 5px 0px 5px;
+}

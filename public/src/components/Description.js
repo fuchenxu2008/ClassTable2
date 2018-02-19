@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Description.css';
 import { Row, Col, Button, Icon } from 'antd';
 import HelpModal from './HelpModal';
+import wechatQR from '../assets/images/wechatQR.JPG';
 
 export default class Description extends Component {
     constructor(props) {
@@ -71,15 +72,25 @@ export default class Description extends Component {
                             title="Contact Me"
                         >
                             <div>
+                                <h2>微信小程序上线 <span className="new">NEW</span></h2>
+
+                                <p style={{ marginBottom: '5px' }}>
+                                    新推出微信小程序版本，您可以直接在微信下拉调出<span className="emphasis-text">XJTLU课表助手</span>
+                                    来查看您当或其他日期的课程。Here's the QR Code, check it out !<br/>
+                                </p>
+                                <div style={{ textAlign: 'center', marginBottom: '5px' }}>
+                                    <img src={wechatQR} alt="WechatQR" style={{ height: '80px' }} />
+                                </div>
+
                                 <h2>灵感来源</h2>
 
-                                <p>在过去，新学期公布课表时，我们常常只能在E-bridge上把课表截图存在相册中, 然后不得不经常反复的去相册翻看自己的课表又或是把其设置为手机锁屏壁纸来获知接下来的课程安排。 有些同学还会手动一条一条地把课表输进日历里去，但是那真的是太麻烦了。
-                                现在通过这个实用的小工具，<span className="emphasis-text">您可以一次性把自己所有的课程添加至日历</span>，而操作过程仅仅是登录验证，<span className="emphasis-text">然后你就可以轻松的通过手机通知中心，智能手表等其他工具快速的查看管理自己接下来的日程！</span>不仅更方便，而且更加简单。</p>
+                                <p>在过去，新学期公布课表时，我们常常只能在E-bridge上把课表截图存在相册中, 然后不得不经常反复的去相册翻看自己的课表又或是把其设置为手机锁屏壁纸来获知接下来的课程安排。
+                                现在通过这个实用的小工具，<span className="emphasis-text">您可以一次性把自己所有的课程添加至日历，然后通过手机通知中心，智能手表等其他工具快速的查看管理自己接下来的日程！</span></p>
 
                                 <h2>联系方式</h2>
 
                                 <p>
-                                嗨！我是西浦大三软工的傅晨旭，感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
+                                    嗨！我是<span style={{fontWeight: 'bold'}}>西浦大三软工的傅晨旭</span>，感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
                                 如果您遇到了任何问题，发现了错误或有其他需求，可以通过以下两种方式联系我~<br/>
                                 如果您觉得本工具很好用，欢迎帮忙转发支持哈 :)
                                 </p>

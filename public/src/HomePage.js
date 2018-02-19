@@ -6,8 +6,7 @@ import Display from './components/Display';
 import Description from './components/Description';
 import config from './config';
 
-import { Row, Col } from 'antd';
-import { Divider } from 'antd';
+import { Row, Col, Divider, notification } from 'antd';
 
 class HomePage extends Component {
     constructor(props) {
@@ -38,6 +37,13 @@ class HomePage extends Component {
             })
     }
 
+    openNotification() {
+        notification.info({
+            message: '微信小程序版本上线！',
+            description: 'Now in WeChat, check it out!',
+        });
+    }
+
     componentDidMount() {
         if (localStorage.getItem('classes') && !sessionStorage.getItem('classes')) {
             sessionStorage.setItem('classes', localStorage.getItem('classes'));
@@ -45,6 +51,9 @@ class HomePage extends Component {
         }
         this.setState({ containerHeight: this.container.clientHeight });
         this.getDownloads();
+        if (!sessionStorage.getItem('classes')) {
+            this.openNotification();
+        }
     }
 
     render() {
