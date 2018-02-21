@@ -10,6 +10,7 @@ const SubMenu = Menu.SubMenu;
 class Navbar extends Component {
     state = {
         current: '',
+        user: ''
     }
 
     handleClick = (e) => {
@@ -44,6 +45,15 @@ class Navbar extends Component {
             })
     }
 
+    componentDidMount() {
+        const userCredential = localStorage.getItem('userCredential') || sessionStorage.getItem('userCredential');
+        if (userCredential) {
+            this.setState({ 'user': JSON.parse(userCredential).uname });
+        } else {
+            this.setState({ 'user': 'No User' });
+        }
+    }
+
     componentDidUpdate() {
         const { current } = this.state;
         if (current === 'refresh') {
@@ -58,18 +68,19 @@ class Navbar extends Component {
     }
 
     render() {
-        if (this.state.current === 'back') return <Redirect to='/' />;
+        const { current, user } = this.state;
+        if (current === 'back') return <Redirect to='/' />;        
 
         return (
             <Menu
                 onClick={this.handleClick}
-                selectedKeys={[this.state.current]}
+                selectedKeys={[current]}
                 style={{ boxShadow: '0px 10px 10px rgb(180, 180, 180)' }}
                 theme="dark"
                 mode="horizontal"
             >
                 <Menu.Item key="back"><Icon type="left" />Return to HomePage</Menu.Item>
-                <SubMenu key="settings" style={{ float: 'right' }} title={<span><Icon type="setting" />Settings</span>}>
+                <SubMenu key="settings" style={{ float: 'right' }} title={<span><Icon type="user" />{user}</span>}>
                     <Menu.Item key="refresh"><Icon type="reload" />Refresh ClassTable</Menu.Item>
                     <Menu.Item key="trash"><Icon type="delete" />Delete local data</Menu.Item>
                 </SubMenu>
