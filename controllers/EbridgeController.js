@@ -38,9 +38,11 @@ module.exports = {
             // Save token to download in db
             token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
             download.token = token;
+            download.platform = 'Web';
             download.status = 'pending';
         } else {
             console.log('no download');
+            download.platform = 'WeChat';
             download.status = 'completed';
         }
         
@@ -108,6 +110,20 @@ module.exports = {
         Download.distinct('username', (err, users) => {
             if (err) { return res.status(400).send('Something went wrong...') }
             return res.json({ count: users.length });
+        })
+    },
+
+    showChart(req, res) {
+        Download.distinct('username', (err, users) => {
+            const formattedUsers = users.map(user => {
+                return {
+                    user: user.uname,
+                    platform: user.platform,
+                    time: user.time,
+                    status: user.status
+                }
+            });
+            res.send(formattedUsers);
         })
     }
 

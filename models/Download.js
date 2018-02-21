@@ -4,6 +4,7 @@ var DownloadSchema = mongoose.Schema({
     username: String,
     token: String,
     time: Date,
+    platform: String,
     status: String
 });
 

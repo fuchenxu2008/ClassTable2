@@ -25,7 +25,7 @@ class Navbar extends Component {
         message.info('Refreshing your classes ~', 8);
         // const socket = io.connect(config.domain);
         const socketId = uuidv4();
-        axios.post(`${config.domain}/ebridge/class`, { uname, psw, socketId })
+        axios.post(`${config.domain}/ebridge/class?download=yes`, { uname, psw, socketId })
             .then(res => {
                 if (res.data.rawClass) {
                     const classTable = JSON.stringify(res.data.rawClass);
