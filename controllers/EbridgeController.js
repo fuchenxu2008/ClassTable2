@@ -117,7 +117,7 @@ module.exports = {
         Download.find({}, (err, users) => {
             const formattedUsers = users.map(user => {
                 return {
-                    user: user.uname,
+                    user: user.username,
                     platform: user.platform,
                     time: user.time,
                     status: user.status
