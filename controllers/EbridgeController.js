@@ -114,7 +114,7 @@ module.exports = {
     },
 
     showChart(req, res) {
-        Download.distinct('username', (err, users) => {
+        Download.find({}, (err, users) => {
             const formattedUsers = users.map(user => {
                 return {
                     user: user.uname,
@@ -123,7 +123,7 @@ module.exports = {
                     status: user.status
                 }
             });
-            res.send(formattedUsers);
+            res.json(formattedUsers);
         })
     }
 
