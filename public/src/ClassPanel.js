@@ -96,7 +96,8 @@ class ClassPanel extends Component {
     }
 
     refreshClass(classTable) {
-        this.setState({ classTable })
+        this.setState({ classTable });
+        this.getClassesOfDay();
     }
 
     async componentDidMount() {
