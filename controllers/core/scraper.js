@@ -20,7 +20,7 @@ module.exports = {
         formData['MUA_CODE.DUMMY.MENSYS.1'] = user.uname;
         formData['PASSWORD.DUMMY.MENSYS.1'] = user.psw;
         formData['BP101.DUMMY_B.MENSYS.1'] = 'Log in';
-        console.log('Logging in...');
+        console.log(`Logging in as ${user.uname}...`);
         socket.io.emit(socket.id, 'Logging in...');
         
         // Post form to log in to intermediate page
