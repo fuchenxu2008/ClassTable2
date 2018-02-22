@@ -51,9 +51,9 @@ class HomePage extends Component {
         }
         this.setState({ containerHeight: this.container.clientHeight });
         this.getDownloads();
-        // if (!sessionStorage.getItem('classes')) {
-        //     this.openNotification();
-        // }
+        if (!sessionStorage.getItem('classes') && !localStorage.getItem('classes')) {
+            this.openNotification();
+        }
     }
 
     render() {

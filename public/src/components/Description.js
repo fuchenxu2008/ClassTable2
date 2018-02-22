@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Description.css';
-import { Row, Col, Button, Icon, Divider } from 'antd';
+import { Row, Col, Button, Icon } from 'antd';
 import HelpModal from './HelpModal';
-// import wechatQR from '../assets/images/wechatQR.JPG';
+import wechatQR from '../assets/images/wechatQR.JPG';
 
 export default class Description extends Component {
     constructor(props) {
@@ -72,9 +72,15 @@ export default class Description extends Component {
                             title="Contact Me"
                         >
                             <div>
-                                <h2>微信小程序即将上线 <span className="new">COMING SOON</span></h2>
+                                <h2>微信小程序上线 <span className="new">NEW</span></h2>
 
-                                <Divider/>
+                                <p style={{ marginBottom: '5px' }}>
+                                    现新推出微信小程序版本，您可以直接在微信下拉调出<span className="emphasis-text">XJTLU课表助手</span>
+                                    来查看您当日或其他日期的课程。Here's the QR Code, check it out !<br />
+                                </p>
+                                <div style={{ textAlign: 'center', marginBottom: '5px' }}>
+                                    <img src={wechatQR} alt="WechatQR" style={{ height: '80px' }} />
+                                </div>
 
                                 <h2>灵感来源</h2>
 

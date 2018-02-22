@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 function initializeTable() {
     // ClassTable

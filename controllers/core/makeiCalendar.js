@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const termInfo = JSON.parse(fs.readFileSync(__dirname + '/term.config.json'));
 
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 module.exports = function makeiCalendar({class_table, user, socket}) {
     socket.io.emit(socket.id, '2');
