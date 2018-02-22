@@ -11,9 +11,15 @@ module.exports = {
 
     async getClass(req, res) {
         const io = req.app.get('socketio');
-        const uname = req.body.uname.toLowerCase();
+        let uname = req.body.uname;
         const psw = req.body.psw;
         const socketId = req.body.socketId;
+        if (!uname || !psw || !socketId) {
+            return res.status(400).json({
+                message: 'Missing body content!!!'
+            })
+        }
+        uname = uname.toLowerCase();        
         const ebridgeSession = new ebridgeHub({ uname, psw, socketId, io });
 
         let rawClass = {};
@@ -21,7 +27,7 @@ module.exports = {
             await ebridgeSession.login();
             rawClass = await ebridgeSession.getClass();
         } catch (err) {
-            return res.send(err);
+            return res.status(400).json({ message: err });
         }
 
         let download = new Download({
@@ -47,7 +53,7 @@ module.exports = {
         }
         
         download.save((err) => {
-            if (err) return res.send(err);
+            if (err) return res.status(400).send(err);
             if (req.query.download) return res.send({ token, rawClass });
             else return res.send({ rawClass });
         })
@@ -75,7 +81,7 @@ module.exports = {
                     console.log(`Sending file...`);
                     res.download(filePath, fileName, (err) => {
                         if (err) {
-                            return res.status(400).send('Something went wrong...')
+                            return res.status(400).json({ message: 'Something went wrong...' })
                         } else {
                             console.log('Operation completed.');
                         }
