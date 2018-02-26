@@ -49,7 +49,8 @@ export default class Description extends Component {
                             <p>
                                 1. 输入你的E-bridge用户名和密码来验证登录。<br/>
                                 2. 等待8-15秒来让后台帮您生成日历。<br />
-                                3. 不要忘记核对一下与<span className="emphasis-text">E-bridge</span>上的官方课表是否一致～
+                                3. <span className="emphasis-text">如您不能正常下载，可以选择发送日历到您的邮箱。</span><br />
+                                4. 不要忘记核对一下与<span className="emphasis-text">E-bridge</span>上的官方课表是否一致～
                             </p>
                             
                             <h2>注意事项</h2>
@@ -57,7 +58,8 @@ export default class Description extends Component {
                                 1. 下载日历文件应当使用<span className="emphasis-text">标准</span>浏览器来访问本网页，比如Safari, Chrome, UC。<span className="emphasis-text">不支持微信一类的应用内置浏览器!</span><br />
                                 2. 整个生成过程会持续8-15秒, 请耐心等待。<br />
                                 3. 如果你使用的是iOS设备但无法添加日历，请确保设置-iCloud-日历已经开启。<br />
-                                4. 如果你使用的是非iOS设备，浏览器将下载一个.ics文件。打开后（安卓选择用日历📅打开）应自动提示添加至您的默认日历。
+                                4. 如果你使用的是非iOS设备，浏览器将下载一个.ics文件。打开后（安卓选择用日历📅打开）应自动提示添加至您的默认日历。<br />
+                                5. 由于西浦邮箱有屏蔽设置，<span className="emphasis-text">请填写校外主流邮箱地址</span>来查收您的日历文件。
                             </p>
 
                             <h2>免责声明：</h2>

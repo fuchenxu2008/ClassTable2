@@ -5,7 +5,7 @@ var moment = require('moment');
 const config = require('../config');
 const Download = require('../models/Download');
 const Visit = require('../models/Visit');
-
+const sendEmail = require('../controllers/email');
 
 module.exports = {
 
@@ -27,7 +27,7 @@ module.exports = {
             await ebridgeSession.login();
             rawClass = await ebridgeSession.getClass();
         } catch (err) {
-            return res.status(400).json({ message: err });
+            return res.json({ message: err });
         }
 
         let download = new Download({
@@ -37,24 +37,33 @@ module.exports = {
 
         let token = '';
 
-        if (req.query.download) {
-            console.log('want download');
-            
+        if (req.query.download || req.body.email) {
             const iCalendar = ebridgeSession.makeCalendar();
-            // Save token to download in db
-            token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
-            download.token = token;
-            download.platform = 'Web';
-            download.status = 'pending';
+
+            if (req.body.email) {
+                console.log(`want email to ${req.body.email}`);
+                sendEmail(req.body.email, uname);
+                if (req.query.download) download.platform = 'Web';
+                else download.platform = 'WeChat';
+                download.status = 'completed';
+            } 
+            else if (req.query.download) {
+                console.log('want download');
+                // Save token to download in db
+                token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
+                download.token = token;
+                download.platform = 'Web';
+                download.status = 'pending';
+            }
         } else {
-            console.log('no download');
+            console.log('no download or email');
             download.platform = 'WeChat';
             download.status = 'completed';
         }
         
         download.save((err) => {
             if (err) return res.status(400).send(err);
-            if (req.query.download) return res.send({ token, rawClass });
+            if (req.query.download && !req.body.email) return res.send({ token, rawClass });
             else return res.send({ rawClass });
         })
     },
