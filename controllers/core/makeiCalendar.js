@@ -52,7 +52,7 @@ function addClassToCal(Class, cal) {
         }
         var classTitle = Class.classTitle.replace(',', '\\,');
         
-        cal.addEvent(`${classTitle} by ${Class.lecturer.replace(',', '\\,')}`, Class.period, Class.location.replace(',', '\\,'), startDateTime, endDateTime, rrule);
+        cal.addEvent(`${classTitle} by ${Class.lecturer.replace(',', '\\,')}`, Class.period, formatLocation(Class.location).replace(',', '\\,'), startDateTime, endDateTime, rrule);
     })
 }
 
@@ -86,4 +86,8 @@ function getInterval(period) {
         }
     });
     return timeInterval;
+}
+
+function formatLocation(location) {
+    return location.split(',').map(loc => loc.split('-').reverse().join('-')).join(',');
 }
