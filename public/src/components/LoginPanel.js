@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import './LoginPanel.css';
 import config from '../config';
 import ProgressModal from './ProgressModal';
-import { Form, Icon, Input, Button, Checkbox, Modal, message, Switch } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Modal, message, Switch, notification } from 'antd';
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 
@@ -77,6 +77,13 @@ class NormalLoginForm extends Component {
         });
     }
 
+    openNotification() {
+        notification.success({
+            message: 'Email sent！',
+            description: 'Your calendar file has been sent.',
+        });
+    }
+
     login() {
         this.props.form.validateFields((err, values) => {
             if (!err) {
@@ -116,7 +123,7 @@ class NormalLoginForm extends Component {
                             }
                             if (!mailChecked) {
                                 window.location.href = `${config.domain}/ebridge/download?token=${res.data.token}`;
-                            }
+                            } else this.openNotification()
                         } else {
                             this.setState({ validateStatus: 'error' })
                         }
