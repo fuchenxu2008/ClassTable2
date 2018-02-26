@@ -89,5 +89,5 @@ function getInterval(period) {
 }
 
 function formatLocation(location) {
-    return location.split(',').map(loc => loc.split('-').reverse().join('-')).join(',');
+    return location.split(',').map(loc => loc.trim().split('-').reverse().join('-')).join(', ');
 }
