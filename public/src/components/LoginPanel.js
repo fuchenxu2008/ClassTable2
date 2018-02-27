@@ -106,7 +106,7 @@ class NormalLoginForm extends Component {
                 let formBody = { uname, psw, socketId };
                 if (mailChecked) formBody['email'] = email;
 
-                axios.post(`${config.domain}/ebridge/class?download=yes`, formBody)
+                axios.post(`${config.domain}/ebridge/class?download=1`, formBody)
                     .then(res => {
                         this.setState({ iconLoading: false, showModal: false, currentStep: 0 });
                         if (res.data.rawClass) {
@@ -148,7 +148,7 @@ class NormalLoginForm extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { validateStatus, iconLoading, showModal, currentStep, redirect, mailChecked, email } = this.state;
+        const { validateStatus, iconLoading, showModal, currentStep, redirect, mailChecked } = this.state;
 
         if (redirect) return <Redirect to='/myclass' /> ;
         

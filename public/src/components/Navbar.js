@@ -25,7 +25,7 @@ class Navbar extends Component {
         message.info('Refreshing your classes ~', 8);
         // const socket = io.connect(config.domain);
         const socketId = uuidv4();
-        axios.post(`${config.domain}/ebridge/class?download=yes`, { uname, psw, socketId })
+        axios.post(`${config.domain}/ebridge/class?download=0`, { uname, psw, socketId })
             .then(res => {
                 if (res.data.rawClass) {
                     const classTable = JSON.stringify(res.data.rawClass);
@@ -33,7 +33,7 @@ class Navbar extends Component {
                         localStorage.setItem('classes', classTable);
                     }
                     sessionStorage.setItem('classes', classTable);
-                    this.props.onRefresh(classTable);
+                    this.props.onRefresh(res.data.rawClass);
                     message.success('Refresh success!', 3);
                 } else {
                     message.error('Refresh failed, maybe try login again?', 3);

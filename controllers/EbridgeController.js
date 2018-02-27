@@ -37,23 +37,25 @@ module.exports = {
 
         let token = '';
 
-        if (req.query.download || req.body.email) {
-            const iCalendar = ebridgeSession.makeCalendar();
-
-            if (req.body.email) {
-                console.log(`want email to ${req.body.email}`);
-                sendEmail(req.body.email, uname);
-                if (req.query.download) download.platform = 'Web';
-                else download.platform = 'WeChat';
+        if (req.query.download) {
+            download.platform = 'Web';
+            if (req.query.download === '0') {
+                console.log('want refresh');
                 download.status = 'completed';
-            } 
-            else if (req.query.download) {
-                console.log('want download');
-                // Save token to download in db
-                token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
-                download.token = token;
-                download.platform = 'Web';
-                download.status = 'pending';
+            } else if (req.query.download === '1') {
+                const iCalendar = ebridgeSession.makeCalendar();
+
+                if (req.body.email) {
+                    console.log(`want email to ${req.body.email}`);
+                    sendEmail(req.body.email, uname);
+                    download.status = 'completed';
+                } else {
+                    console.log('want download');
+                    // Save token to download in db
+                    token = jwt.sign({ uname }, config.secret, { expiresIn: '1m' });
+                    download.token = token;
+                    download.status = 'pending';
+                } 
             }
         } else {
             console.log('no download or email');
