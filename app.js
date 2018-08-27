@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var config = require('./config');
 
 var ebridge = require('./routes/ebridge');
+// var weapp = require('./routes/weapp');
 
 var app = express();
 var server = require('http').Server(app);
@@ -38,6 +39,7 @@ var io = require('socket.io')(server);
 app.set('socketio', io);
 
 app.use('/ebridge', ebridge);
+// app.use('/weapp', weapp);
 app.use(express.static(path.join(__dirname, 'public/build')));
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {

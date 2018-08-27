@@ -1,10 +1,14 @@
 export default {
     domain: 'https://class.kyrie.top',
     holidays: {
-        weeks: { "7": "Midterm" },
-        days: {
-            "2018-04-05": "Qingming Festival" ,
-            "2018-05-01": "Labour day",
-        }
+        weeks: [
+            { "4": "National Day"  },
+            { "8": "Midterm"  },
+            { "16": "Christmas"  },
+            { "17": "New Year"  }
+        ],
+        days: [
+            { "2018-09-24": "Mid-Autumn Day" }
+        ]
     }
 }

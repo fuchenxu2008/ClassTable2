@@ -1,13 +1,15 @@
 {
-    "termStart": "2018-02-26",
-    "termEnd": "2018-06-01",
+    "termStart": "2018-09-10",
+    "termEnd": "2019-01-06",
     "holidays": {
         "weeks": [
-            { "7": "Midterm"  }
+            { "4": "National Day"  },
+            { "8": "Midterm"  },
+            { "16": "Christmas"  },
+            { "17": "New Year"  }
         ],
         "days": [
-            { "2018-04-05": "Qingming Festival" },
-            { "2018-05-01": "Labour day" }
+            { "2018-09-24": "Mid-Autumn Day" }
         ]
     }
 }
