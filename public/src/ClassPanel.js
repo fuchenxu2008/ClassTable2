@@ -38,7 +38,12 @@ class ClassPanel extends Component {
         const termStart = moment("2018-02-26", "YYYY-MM-DD");
         const selectedDay = moment(this.state.selected_date);     
         const actualWeek = Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
-        return actualWeek > 4 ? actualWeek - 1 : actualWeek;
+        if (actualWeek === 4) {
+            return 'National Holiday';
+        } else {
+            return actualWeek > 4 ? actualWeek - 1 : actualWeek;
+        }
+        
     }
 
     getInterval(period) {
@@ -115,7 +120,7 @@ class ClassPanel extends Component {
                 <Navbar onRefresh={this.refreshClass}/>
                 <div className="classpanel">
                     <CalendarView onSelect={this.onSelect} />
-                    {selected_week >= 1 && selected_week <= 14 &&
+                    {((selected_week >= 1 && selected_week <= 14) || typeof(selected_week) === 'string') &&
                         <Divider className="week-indicator">Week {selected_week} <span className="weekDay-indicator"> {selected_weekDay}</span></Divider>
                     }
                     <ClassList classes={classesOfDay} />
