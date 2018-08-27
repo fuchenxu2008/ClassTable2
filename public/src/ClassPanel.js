@@ -37,7 +37,8 @@ class ClassPanel extends Component {
     getWeek() {
         const termStart = moment("2018-02-26", "YYYY-MM-DD");
         const selectedDay = moment(this.state.selected_date);     
-        return Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
+        const actualWeek = Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
+        return actualWeek > 4 ? actualWeek - 1 : actualWeek;
     }
 
     getInterval(period) {
