@@ -5,9 +5,9 @@ export default {
     holidays: {
         weeks: { 
             "4": "National Day",
-            "8": "Midterm",
-            "16": "Christmas",
-            "17": "New Year",
+            "7": "Midterm",
+            "15": "Christmas",
+            "16": "New Year",
         },
         days: {
             "2018-09-24": "Mid-Autumn Day"
