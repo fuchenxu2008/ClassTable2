@@ -3,10 +3,10 @@ const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 
 const transporter = nodemailer.createTransport({
-    service: '163',
+    service: 'outlook',
     auth: {
-        user: 'fuchenxu2008@163.com',
-        pass: 'Fcx700221' //授权码
+        user: 'classtablexjtlu@outlook.com',
+        pass: 'fcx20121221' //授权码
     }
 });
 
@@ -39,7 +39,7 @@ module.exports = (recipient, uname) => {
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"Chenxu Fu 👻 ClassTable" <fuchenxu2008@163.com>', // sender address
+        from: '"Chenxu Fu 👻 ClassTable" <classtablexjtlu@outlook.com>', // sender address
         to: `${recipient}`, // list of receivers
         subject: `Here goes your Calendar file 📆`, // Subject line
         html: `${emailBody}`, // html body
