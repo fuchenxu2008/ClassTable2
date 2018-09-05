@@ -15,7 +15,7 @@ class NormalLoginForm extends Component {
         uname: '',
         psw: '',
         remember: true,
-        mailChecked: true,
+        mailChecked: false,
         email: '',
         validateStatus: '',
         iconLoading: false,
@@ -60,11 +60,11 @@ class NormalLoginForm extends Component {
     showConfirm = () => {
         confirm({
             title: `Welcome back ${this.state.uname} !`,
-            content: `Local calendar found, directly go to your calendar? or 'Cancel' to refresh.`,
-            onOk: () => {
-                this.setState({ redirect: true })
-            },
-            onCancel: () => { this.login(); },
+            content: `Local calendar found, directly go to your cached calendar or refresh?`,
+            okText: 'Refresh',
+            cancelText: 'See local',
+            onOk: () => this.login(),
+            onCancel: () => this.setState({ redirect: true }),
         });
     }
 
@@ -113,7 +113,7 @@ class NormalLoginForm extends Component {
                                 message.warning('WeChat blocked the download !', 5);
                             }
                             if (!mailChecked) {
-                                window.location.href = `${config.domain}/ebridge/download?token=${res.data.token}`;
+                                window.location = `${config.domain}/ebridge/download?token=${res.data.token}`;
                             } else this.openNotification()
                         } else {
                             this.setState({ validateStatus: 'error' })
