@@ -113,7 +113,9 @@ class NormalLoginForm extends Component {
                                 message.warning('WeChat blocked the download !', 5);
                             }
                             if (!mailChecked) {
-                                window.location = `${config.domain}/ebridge/download?token=${res.data.token}`;
+                                setTimeout(function () {
+                                    document.location.href = `${config.domain}/ebridge/download?token=${res.data.token}`;
+                                }, 250);
                             } else this.openNotification()
                         } else {
                             this.setState({ validateStatus: 'error' })
