@@ -114,7 +114,7 @@ class NormalLoginForm extends Component {
                             }
                             if (!mailChecked) {
                                 setTimeout(function () {
-                                    document.location.href = `${config.domain}/ebridge/download?token=${res.data.token}`;
+                                    document.location = `${config.domain}/ebridge/download?token=${res.data.token}`;
                                 }, 250);
                             } else this.openNotification()
                         } else {
