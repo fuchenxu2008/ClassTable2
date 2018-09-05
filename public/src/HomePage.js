@@ -39,8 +39,8 @@ class HomePage extends Component {
 
     openNotification() {
         notification.info({
-            message: '微信小程序版本上线！',
-            description: 'Now in WeChat, check it out!',
+            message: 'NEW 2018/19 Semester1!',
+            description: '如果下载出现空白页请尝试刷新页面:)',
         });
     }
 
@@ -51,9 +51,7 @@ class HomePage extends Component {
         }
         this.setState({ containerHeight: this.container.clientHeight });
         this.getDownloads();
-        if (!sessionStorage.getItem('classes') && !localStorage.getItem('classes')) {
-            this.openNotification();
-        }
+        this.openNotification();
     }
 
     render() {
