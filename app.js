@@ -37,12 +37,12 @@ mongoose.connect(config.mongoURL, (err) => {
 
 var io = require('socket.io')(server);
 app.set('socketio', io);
+app.use(express.static(path.join(__dirname, 'public/build')));
 
 app.use('/ebridge', ebridge);
 // app.use('/weapp', weapp);
-app.use(express.static(path.join(__dirname, 'public/build')));
 // Always return the main index.html, so react-router render the route in the client
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/build/index.html'));
 });
 
