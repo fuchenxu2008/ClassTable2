@@ -56,10 +56,12 @@ export default class Description extends Component {
                             <h2>注意事项</h2>
                             <p>
                                 1. 下载日历文件应当使用<span className="emphasis-text">标准</span>浏览器来访问本网页，比如Safari, Chrome, UC。<span className="emphasis-text">不支持微信一类的应用内置浏览器!</span><br />
-                                2. 整个生成过程会持续8-15秒, 请耐心等待。<br />
-                                3. 如果你使用的是iOS设备但无法添加日历，请确保设置-iCloud-日历已经开启。<br />
-                                4. 如果你使用的是非iOS设备，浏览器将下载一个.ics文件。打开后（安卓选择用日历📅打开）应自动提示添加至您的默认日历。<br />
-                                5. 由于西浦邮箱有屏蔽设置，<span className="emphasis-text">请填写校外主流邮箱地址</span>来查收您的日历文件。
+                                2. <span className="emphasis-text">新iOS版本可能无法直接下载，推荐使用邮件方式。</span><br />
+                                3. 整个生成过程会持续8-15秒, 请耐心等待。<br />
+                                4. 如果你使用的是iOS设备但无法添加日历，请确保设置-iCloud-日历已经开启。<br />
+                                5. 如果你使用的是非iOS设备，浏览器将下载一个.ics文件。打开后（安卓选择用日历📅打开）应自动提示添加至您的默认日历。<br />
+                                6. 由于西浦邮箱有屏蔽设置，<span className="emphasis-text">请填写校外主流邮箱地址</span>来查收您的日历文件。<br />
+                                7. 如果您找不到发送的邮件，请查看您的垃圾箱是否隔离了邮件。
                             </p>
 
                             <h2>免责声明：</h2>
@@ -74,6 +76,13 @@ export default class Description extends Component {
                             title="Contact Me"
                         >
                             <div>
+                                <h2>重构API版10月上线 <span className="new">COMING SOON</span></h2>
+
+                                <p style={{ marginBottom: '5px' }}>
+                                    即将与IT Service合作，提供API通道，以及小程序版重构，预计10月上线。
+                                </p>
+                                <br />
+
                                 <h2>微信小程序上线 <span className="new">NEW</span></h2>
 
                                 <p style={{ marginBottom: '5px' }}>
@@ -92,7 +101,7 @@ export default class Description extends Component {
                                 <h2>联系方式</h2>
 
                                 <p>
-                                    嗨！我是<span style={{fontWeight: 'bold'}}>西浦大三软工的傅晨旭</span>，感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
+                                    嗨！我是<span style={{fontWeight: 'bold'}}>西浦大四软工的傅晨旭</span>，感谢您访问本网站，<span className="emphasis-text">请在导出日历后仔细核对是否与官方课表一致。（您应额外注意课程和其对应的教学周是否匹配）</span><br/>
                                 如果您遇到了任何问题，发现了错误或有其他需求，可以通过以下两种方式联系我~<br/>
                                 如果您觉得本工具很好用，欢迎帮忙转发支持哈 :)
                                 </p>

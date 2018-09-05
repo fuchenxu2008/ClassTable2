@@ -11,30 +11,21 @@ const confirm = Modal.confirm;
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            uname: '',
-            psw: '',
-            remember: true,
-            mailChecked: false,
-            email: '',
-            validateStatus: '',
-            iconLoading: false,
-            showModal: false,
-            currentStep: 0,
-            redirect: false
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.login = this.login.bind(this);
-        this.handleUnameChange = this.handleUnameChange.bind(this);
-        this.handlePswChange = this.handlePswChange.bind(this);
-        this.onMailSwitchChange = this.onMailSwitchChange.bind(this);
-        this.handleRememberChange = this.handleRememberChange.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
+    state = {
+        uname: '',
+        psw: '',
+        remember: true,
+        mailChecked: true,
+        email: '',
+        validateStatus: '',
+        iconLoading: false,
+        showModal: false,
+        currentStep: 0,
+        redirect: false
     }
 
     componentDidMount() {
+        // this.openNotification();
         const cachedCredential = localStorage.getItem('userCredential');
         if (cachedCredential) {
             const user = JSON.parse(cachedCredential);
@@ -46,27 +37,27 @@ class NormalLoginForm extends Component {
         }
     }
 
-    handleUnameChange(e) {
+    handleUnameChange = (e) => {
         this.setState({ uname: e.target.value, validateStatus: '' })
     }
 
-    handlePswChange(e) {
+    handlePswChange = (e) => {
         this.setState({ psw: e.target.value, validateStatus: '' })
     }
 
-    onMailSwitchChange(mailChecked) {
+    onMailSwitchChange = (mailChecked) => {
         this.setState({ mailChecked });
     }
 
-    handleEmailChange(e) {
+    handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
     }
 
-    handleRememberChange(e) {
+    handleRememberChange = (e) => {
         this.setState({ remember: e.target.checked });
     }
 
-    showConfirm() {
+    showConfirm = () => {
         confirm({
             title: `Welcome back ${this.state.uname} !`,
             content: `Local calendar found, directly go to your calendar? or 'Cancel' to refresh.`,
@@ -77,14 +68,14 @@ class NormalLoginForm extends Component {
         });
     }
 
-    openNotification() {
+    openNotification = () => {
         notification.success({
             message: 'Email sent！',
-            description: 'Your calendar file has been sent.',
+            description: <div>Your calendar file has been sent.<br /><b>Check for Spam or Trash Box if not found!</b></div>,
         });
     }
 
-    login() {
+    login = () => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({ iconLoading: true, showModal: true })
@@ -135,7 +126,7 @@ class NormalLoginForm extends Component {
         });
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         const cachedCredential = localStorage.getItem('userCredential');
@@ -190,7 +181,7 @@ class NormalLoginForm extends Component {
                         <Checkbox onChange={this.handleRememberChange}>Remember me</Checkbox>
                     )}
                     <div className="login-form-forgot">
-                        <Switch onChange={this.onMailSwitchChange}/> Mail me
+                        <Switch onChange={this.onMailSwitchChange} checked={mailChecked} /> Mail me
                     </div>
                     <Button size="large" loading={iconLoading} type="primary" htmlType="submit" className="login-form-button">
                          LOGIN

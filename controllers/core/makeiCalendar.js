@@ -22,7 +22,9 @@ module.exports = function makeiCalendar({class_table, user, socket}) {
     termInfo.holidays.weeks.forEach(holiweek => {
         var holiweekStart = moment(termInfo.termStart).add(parseInt(Object.keys(holiweek)[0] - 1), 'week').toDate();
         var holiweekEnd = moment(holiweekStart).add('5', 'day').toDate();
-        cal.addEvent(`🚩 ${holiweek[Object.keys(holiweek)[0]]}`, `🚩🚩🚩`, '', holiweekStart, holiweekEnd);
+        const eventName = holiweek[Object.keys(holiweek)[0]];
+        const emoji = eventName === 'Midterm' ? '🚩' : '🎉';
+        cal.addEvent(`${emoji} ${eventName}`, `${emoji}${emoji}${emoji}`, '', holiweekStart, holiweekEnd);
     });
     console.log('saving...');
     socket.io.emit(socket.id, 'Almost there...');

@@ -35,15 +35,14 @@ class ClassPanel extends Component {
     }
 
     getWeek() {
-        const termStart = moment("2018-02-26", "YYYY-MM-DD");
+        const termStart = moment(config.termStart, "YYYY-MM-DD");
         const selectedDay = moment(this.state.selected_date);     
         const actualWeek = Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
         if (actualWeek === 4) {
             return 'National Holiday';
         } else {
             return actualWeek > 4 ? actualWeek - 1 : actualWeek;
-        }
-        
+        }  
     }
 
     getInterval(period) {
