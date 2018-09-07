@@ -39,7 +39,7 @@ class ClassPanel extends Component {
         const selectedDay = moment(this.state.selected_date);     
         const actualWeek = Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
         if (actualWeek === 4) {
-            return 'National Holiday';
+            return '3.5';
         } else {
             return actualWeek > 4 ? actualWeek - 1 : actualWeek;
         }  

@@ -1,10 +1,10 @@
 export default {
-    // domain: 'https://class.kyrie.top',
-    domain: 'http://10.8.204.12:8080',
+    domain: 'https://class.kyrie.top',
+    // domain: 'http://localhost:8080',
     termStart: '2018-09-10',
     holidays: {
         weeks: { 
-            "4": "National Day",
+            "3.5": "National Day",
             "7": "Midterm",
             "15": "Christmas",
             "16": "New Year",
