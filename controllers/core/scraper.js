@@ -61,8 +61,8 @@ module.exports = {
 
         let timeTableURL = $('a:contains("My Personal Class Timetable")').attr('href');
         if (timeTableURL === undefined) {
-            console.log('No Class');
-            socket.io.emit(socket.id, '-1');
+            console.log('Register first');
+            socket.io.emit(socket.id, '-2');
             throw 'No Class!';
         }
         timeTableURL = timeTableURL.substring(7);
