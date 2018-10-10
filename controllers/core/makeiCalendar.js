@@ -89,7 +89,7 @@ function getInterval(period) {
                 timeInterval[5] = end + 1;
             } else timeInterval[start] = end;
         } else {
-            start >= 5
+            start >= 4
             ? timeInterval[start + 1] = start + 1
             : timeInterval[start] = start;
         }
