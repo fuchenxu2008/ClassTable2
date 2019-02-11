@@ -52,7 +52,7 @@ module.exports = {
 
     async getTimetable({ portal, jar, socket }) {
         var $ = cheerio.load(portal);
-        const timeTablePageURL = $('#TIMETABLE').attr('href');
+        const timeTablePageURL = $('#PRS_STU_TB').attr('href');
         var body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTablePageURL}`, jar})
         console.log('Entering classTable Page');
         socket.io.emit(socket.id, '1');
@@ -65,7 +65,6 @@ module.exports = {
             socket.io.emit(socket.id, '-2');
             throw 'No Class!';
         }
-        timeTableURL = timeTableURL.substring(7);
         
         body = await rp({uri: `https://ebridge.xjtlu.edu.cn/urd/sits.urd/run/${timeTableURL}`, jar})   
         console.log('Got table!');

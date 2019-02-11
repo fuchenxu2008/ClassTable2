@@ -19,33 +19,22 @@ function numberRange(start, end) {
 }
 
 class ClassPanel extends Component {
-    constructor() {
-        super();
-        this.state = { 
-            classTable: {},
-            classesOfDay: [],
-            selected_date: moment(),
-            selected_week: 0,
-            selected_weekDay: weekDays[moment().isoWeekday() - 1],
-        }
-        this.onSelect = this.onSelect.bind(this);
-        this.getWeek = this.getWeek.bind(this);
-        this.getClassesOfDay = this.getClassesOfDay.bind(this);
-        this.refreshClass = this.refreshClass.bind(this);
+    state = {
+        classTable: {},
+        classesOfDay: [],
+        selected_date: moment(),
+        selected_week: 0,
+        selected_weekDay: weekDays[moment().isoWeekday() - 1],
     }
 
-    getWeek() {
+    getWeek = () => {
         const termStart = moment(config.termStart, "YYYY-MM-DD");
         const selectedDay = moment(this.state.selected_date);     
         const actualWeek = Math.floor(selectedDay.diff(termStart, 'days') / 7) + 1;
-        if (actualWeek === 4) {
-            return '3.5';
-        } else {
-            return actualWeek > 4 ? actualWeek - 1 : actualWeek;
-        }  
+        return actualWeek;
     }
 
-    getInterval(period) {
+    getInterval = (period) => {
         const intervals = period.split(':')[1].split(',').map(interval => interval.trim());
         let intervalDict = {};
         intervals.forEach(interval => {
@@ -64,12 +53,12 @@ class ClassPanel extends Component {
         return intervalScope;
     }    
 
-    async onSelect(selected_date) {
+    onSelect = async (selected_date) => {
         await this.setState({ selected_date });
         this.getClassesOfDay();        
     }
 
-    getClassesOfDay() {
+    getClassesOfDay = () => {
         const { classTable, selected_date } = this.state;
         const week = this.getWeek();
         
@@ -100,7 +89,7 @@ class ClassPanel extends Component {
         }); 
     }
 
-    refreshClass(classTable) {
+    refreshClass = (classTable) => {
         this.setState({ classTable });
         this.getClassesOfDay();
     }
@@ -119,7 +108,7 @@ class ClassPanel extends Component {
                 <Navbar onRefresh={this.refreshClass}/>
                 <div className="classpanel">
                     <CalendarView onSelect={this.onSelect} />
-                    {((selected_week >= 1 && selected_week <= 14) || typeof(selected_week) === 'string') &&
+                    {((selected_week >= 1 && selected_week <= 16) || typeof(selected_week) === 'string') &&
                         <Divider className="week-indicator">Week {selected_week} <span className="weekDay-indicator"> {selected_weekDay}</span></Divider>
                     }
                     <ClassList classes={classesOfDay} />

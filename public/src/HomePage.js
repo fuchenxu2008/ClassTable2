@@ -39,8 +39,8 @@ class HomePage extends Component {
 
     openNotification() {
         notification.info({
-            message: 'NEW 2018/19 Semester1!',
-            description: '如果下载出现空白页请尝试刷新页面:)',
+            message: 'NEW 2018/19 Semester2!',
+            // description: '如果下载出现空白页请尝试刷新页面:)',
         });
     }
 

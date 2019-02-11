@@ -76,17 +76,11 @@ export default class Description extends Component {
                             title="Contact Me"
                         >
                             <div>
-                                <h2>重构API版10月上线 <span className="new">COMING SOON</span></h2>
+
+                                <h2>微信小程序版本</h2>
 
                                 <p style={{ marginBottom: '5px' }}>
-                                    即将与IT Service合作，提供API通道，以及小程序版重构，预计10月上线。
-                                </p>
-                                <br />
-
-                                <h2>微信小程序上线 <span className="new">NEW</span></h2>
-
-                                <p style={{ marginBottom: '5px' }}>
-                                    现新推出微信小程序版本，您可以直接在微信下拉调出<span className="emphasis-text">XJTLU课表助手</span>
+                                    微信小程序版本，您可以直接在微信下拉调出<span className="emphasis-text">XJTLU课表助手</span>
                                     来查看您当日或其他日期的课程。Here's the QR Code, check it out !<br />
                                 </p>
                                 <div style={{ textAlign: 'center', marginBottom: '5px' }}>
