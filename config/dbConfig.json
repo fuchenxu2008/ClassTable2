@@ -1,6 +1,6 @@
 {
     "uname": "root",
     "psw": "fcx20121221",
-    "url": "127.0.0.1:27017",
+    "url": "kyrie.top:27017",
     "database": "classTable2"
 }
