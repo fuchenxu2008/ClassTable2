@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
 
 mongoose.connect(config.mongoURL, (err) => {
   if (err) throw err;
+  console.log('[MongoDB connected]');
 });
 
 var io = require('socket.io')(server);
