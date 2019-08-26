@@ -1,6 +1,6 @@
 {
-    "uname": "root",
-    "psw": "fcx20121221",
-    "url": "kyrie.top:27017",
+    "uname": "admin",
+    "psw": "puchi2019",
+    "url": "api.xjtluwall.com:27003",
     "database": "classTable2"
 }

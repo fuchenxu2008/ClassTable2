@@ -82,9 +82,16 @@ function getInterval(period) {
         const start = parseInt(startEnd[0]);
         if (startEnd.length > 1) {
             const end = parseInt(startEnd[1]);
-            timeInterval[start] = end;
+            if (start >= 5 && end >= 5) {
+                timeInterval[start + 1] = end + 1;
+            } else if (start < 5 && end >= 5) {
+                timeInterval[start] = 4;
+                timeInterval[6] = end + 1;
+            } else timeInterval[start] = end;
         } else {
-            timeInterval[start] = start;
+            start >= 5
+            ? timeInterval[start + 1] = start + 1
+            : timeInterval[start] = start;
         }
     });
     return timeInterval;

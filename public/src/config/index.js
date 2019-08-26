@@ -1,17 +1,17 @@
 export default {
-    domain: 'https://class.kyrie.top',
-    // domain: 'http://localhost:8080',
-    termStart: '2019-02-18',
-    holidays: {
-        weeks: { 
-            "7": "Midterm",
-            "15": "Examination days",
-            "16": "Examination days",
-        },
-        days: {
-            "2019-04-05": "Qingming Festival",
-            "2019-05-01": "Labour day",
-            "2019-06-07": "Dragon Boat day",
-        },
+  // domain: 'https://class.kyrie.top',
+  domain: 'http://192.168.31.24:8080',
+  termStart: '2019-09-02',
+  holidays: {
+    weeks: {
+      '5': 'National Day',
+      '8': 'Midterm',
+      '16': 'Reading Week',
+      '17': 'Christmas'
+    },
+    days: {
+      '2019-09-13': 'Mid-Autumn Day',
+      '2020-01-01': "New Year's Day"
     }
-}
+  }
+};
